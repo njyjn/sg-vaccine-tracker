@@ -117,6 +117,12 @@ const serverlessConfiguration: AWS = {
             cors: true,
             private: true,
           }
+        },
+        {
+          schedule: {
+            rate: 'cron(0 12 * * ? *)',
+            enabled: true,
+          }
         }
       ]
     }
