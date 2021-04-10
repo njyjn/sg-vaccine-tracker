@@ -1,7 +1,5 @@
 import type { AWS } from '@serverless/typescript';
 
-import hello from '@functions/hello';
-
 const serverlessConfiguration: AWS = {
   service: 'sg-vaccine-tracker',
   frameworkVersion: '2',
@@ -51,13 +49,109 @@ const serverlessConfiguration: AWS = {
       minimumCompressionSize: 1024,
       shouldStartNameWithService: true,
     },
+    apiKeys: [
+      {
+        SGVTDev: [
+          'sgvtDevKey'
+        ]
+      }
+    ],
+    usagePlan: [
+      {
+        SGVTDev: {
+          quota: {
+            limit: 5000,
+            offset: 2,
+            period: 'MONTH'
+          },
+          throttle: {
+            burstLimit: 5,
+            rateLimit: 5
+          }
+        }
+      }
+    ],
     environment: {
       AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
+      COUNTS_TABLE: "sgvt-counts-${self:provider.stage}",
+      STAT_URL: 'https://www.moh.gov.sg/covid-19/vaccination',
     },
     lambdaHashingVersion: '20201221',
+    iamRoleStatements: [
+      {
+        Effect: 'Allow',
+        Action: [
+          'dynamodb:Scan',
+          'dynamodb:PutItem',
+          'dynamodb:GetItem',
+        ],
+        Resource: "arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.COUNTS_TABLE}",
+      },
+    ],
+    stage: "${opt:stage, 'dev'}",
+    // @ts-ignore
+    region: "${opt:region, 'us-east-1'}",
   },
   // import the function via paths
-  functions: { hello },
+  functions: {
+    GetAllCounts: {
+      handler: 'src/lambdas/http/getAllCounts.handler',
+      events: [
+        {
+          http: {
+            method: 'get',
+            path: 'counts',
+            cors: true,
+            private: true,
+          }
+        }
+      ]
+    },
+    SyncLatestCount: {
+      handler: 'src/lambdas/scheduler/syncLatestCount.handler',
+      events: [
+        {
+          http: {
+            method: 'post',
+            path: 'counts',
+            cors: true,
+            private: true,
+          }
+        }
+      ]
+    }
+  },
+  resources: {
+    Resources: {
+      CountsDynamoDBTable: {
+        Type: 'AWS::DynamoDB::Table',
+        Properties: {
+          AttributeDefinitions: [
+            {
+              AttributeName: 'dateAsOf',
+              AttributeType: 'S',
+            },
+            {
+              AttributeName: 'type',
+              AttributeType: 'S',
+            },
+          ],
+          KeySchema: [
+            {
+              AttributeName: 'dateAsOf',
+              KeyType: 'HASH',
+            },
+            {
+              AttributeName: 'type',
+              KeyType: 'RANGE',
+            }
+          ],
+          BillingMode: 'PAY_PER_REQUEST',
+          TableName: "${self:provider.environment.COUNTS_TABLE}"
+        }
+      }
+    }
+  }
 };
 
 module.exports = serverlessConfiguration;
