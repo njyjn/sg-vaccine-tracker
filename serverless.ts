@@ -10,8 +10,40 @@ const serverlessConfiguration: AWS = {
       webpackConfig: './webpack.config.js',
       includeModules: true,
     },
+    'serverless-offline': {
+      httpPort: 3003,
+    },
+    // local dynamodb
+    dynamodb: {
+      stages: [
+        'local'
+      ],
+      start: {
+        image: 'sgvt-dynamodb-local',
+        port: 8000,
+        noStart: true,
+        migrate: true,
+        seed: true,
+      },
+      seed: {
+        invites: {
+          sources: [
+            {
+              table: "${self:provider.environment.COUNTS_TABLE}",
+              sources: [
+                'docker/dynamodb/seeds/counts.json'
+              ]
+            }
+          ]
+        }
+      }
+    }
   },
-  plugins: ['serverless-webpack'],
+  plugins: [
+    'serverless-webpack',
+    'serverless-dynamodb-local',
+    'serverless-offline',
+  ],
   provider: {
     name: 'aws',
     runtime: 'nodejs14.x',
