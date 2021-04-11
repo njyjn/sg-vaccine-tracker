@@ -2,7 +2,8 @@ import * as React from 'react';
 import { getLatestCount } from '../api/counts-api';
 import { Count } from '../types/Count';
 
-import { Dimmer, Header, Loader } from 'semantic-ui-react';
+import { Dimmer, Grid, Header, Loader, Progress, Icon} from 'semantic-ui-react';
+import 'semantic-ui-css/semantic.min.css';
 
 interface CountsProps {};
 
@@ -51,19 +52,26 @@ export class Counts extends React.PureComponent<CountsProps, CountsState> {
         if (this.state.loadingCount) {
             return this.renderLoading();
         }
-      
+        const value = this.state.count.value
+        const percent = Math.round(value / 5685800 * 10000.0) / 100;
+        console.log(percent)
         return (
-            <div>
-                <Header as ="h3">
-                    {new Date(this.state.count.dateAsOf).toDateString()}
-                </Header>
-                <Header as ="h1">
-                    {Math.round(this.state.count.value / 5685800 * 10000.0) / 100}%
-                </Header>
-                <Header as ="h3">
-                    of Singaporeans are fully vaccinated against COVID-19
-                </Header>
-            </div>
+            <Grid.Row>
+                <Grid.Column textAlign="center">
+                    <Icon size="big" name="syringe" color="red" inverted />
+                    <Header size="small" inverted>
+                        {new Date(this.state.count.dateAsOf).toLocaleDateString(undefined, { timeZone: 'Asia/Singapore' })}
+                    </Header>
+                    <Header size="huge" inverted>
+                        {percent}%
+                    </Header>
+                    <Progress percent={percent} inverted color="grey">
+                    </Progress>
+                    <Header size="tiny" inverted>
+                        of Singaporeans are fully vaccinated against COVID-19
+                    </Header>
+                </Grid.Column>
+            </Grid.Row>
         )
     }
 
@@ -79,10 +87,12 @@ export class Counts extends React.PureComponent<CountsProps, CountsState> {
 
     renderError() {
         return (
-            <div>
-                <Header as ="h2">¯\_(ツ)_/¯</Header>
-                <Header as ="h3">{this.randomErrorString()}</Header>
-            </div>
+            <Grid.Row>
+                <Grid.Column textAlign="center">
+                    <Header inverted as ="large">¯\_(ツ)_/¯</Header>
+                    <Header inverted size="medium">{this.randomErrorString()}</Header>
+                </Grid.Column>
+            </Grid.Row>
         );
     }
 
