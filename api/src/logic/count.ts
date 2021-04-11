@@ -15,6 +15,26 @@ export async function getAllCounts(limit?: number, nextKey?: string): Promise<[C
     }
 }
 
+export async function getLatestCount(type?: string): Promise<Count> {
+    // TODO: Implement type filtered in countAccess layer
+    // let countType = type || 'fullyVaccinated';
+    try {
+        const counts = await countAccess.getAllCounts();
+        const sorted = counts[0].sort((a,b) => {
+            const dateA = new Date(a.dateAsOf);
+            const dateB = new Date(b.dateAsOf);
+            if (dateA < dateB) {
+                return 1;
+            } else {
+                return -1;
+            }
+        });
+        return sorted[0];
+    } catch (e) {
+        console.log('Error getting latest count:', e);
+    }
+};
+
 export async function getHtmlContent(sourceUrl?: string): Promise<Count> {
     try {
         const url = sourceUrl || statUrl;

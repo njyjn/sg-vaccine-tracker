@@ -94,6 +94,19 @@ const serverlessConfiguration: AWS = {
   },
   // import the function via paths
   functions: {
+    GetLatestCount: {
+      handler: 'src/lambdas/http/getLatestCount.handler',
+      events: [
+        {
+          http: {
+            method: 'get',
+            path: 'counts/latest',
+            cors: true,
+            private: true,
+          }
+        }
+      ]
+    },
     GetAllCounts: {
       handler: 'src/lambdas/http/getAllCounts.handler',
       events: [
