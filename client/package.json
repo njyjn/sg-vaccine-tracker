@@ -6,6 +6,7 @@
     "@testing-library/jest-dom": "^5.11.10",
     "@testing-library/react": "^11.2.6",
     "@testing-library/user-event": "^12.8.3",
+    "@types/react": "^17.0.3",
     "axios": "^0.21.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
@@ -18,9 +19,14 @@
   "scripts": {
     "start": "react-scripts start",
     "clean": "rm -rf ./build",
-    "build": "npm run clean && react-scripts build && cp package.json build/package.json && mkdir build/tmp/ && cd build && zip -r Archive.zip . && cd ..",
+    "build": "npm run clean && react-scripts build && cp package.json build/package.json && cd build && zip -r Archive.zip . && cd ..",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "deploy": "eb deploy --staged"
+  },
+  "devDependencies": {
+    "@types/react-dom": "^17.0.3",
+    "@types/react-router-dom": "^5.1.7"
   },
   "eslintConfig": {
     "extends": [
@@ -41,10 +47,5 @@
     ]
   },
   "author": "Justin Ng",
-  "license": "MIT",
-  "devDependencies": {
-    "@types/react": "^17.0.3",
-    "@types/react-dom": "^17.0.3",
-    "@types/react-router-dom": "^5.1.7"
-  }
+  "license": "MIT"
 }

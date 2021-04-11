@@ -1,9 +1,11 @@
 branch-defaults:
   default:
     environment: sg-vaccine-tracker
+    group_suffix: null
+deploy:
+  artifact: ./build/Archive.zip
 global:
   application_name: sg-vaccine-tracker
-  artifact: ./build/Archive.zip
   branch: null
   default_ec2_keyname: aws-eb
   default_platform: Node.js 12 running on 64bit Amazon Linux 2
