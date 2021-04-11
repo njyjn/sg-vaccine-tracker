@@ -28,6 +28,19 @@
 
 .App-link {
   color: #61dafb;
+  font-weight: normal;
+}
+
+ul.App-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+li.App-listitem {
+  font-weight: bolder;
+  font-size: 10pt;
+  align-items: left;
 }
 
 @keyframes App-logo-spin {
