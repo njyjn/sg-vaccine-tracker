@@ -1,0 +1,18 @@
+branch-defaults:
+  default:
+    environment: sg-vaccine-tracker
+global:
+  application_name: sg-vaccine-tracker
+  artifact: ./build/Archive.zip
+  branch: null
+  default_ec2_keyname: aws-eb
+  default_platform: Node.js 12 running on 64bit Amazon Linux 2
+  default_region: ap-southeast-1
+  include_git_submodules: true
+  instance_profile: null
+  platform_name: null
+  platform_version: null
+  profile: eb
+  repository: null
+  sc: null
+  workspace_type: Application
