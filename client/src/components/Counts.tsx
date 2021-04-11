@@ -78,7 +78,20 @@ export class Counts extends React.PureComponent<CountsProps, CountsState> {
     }
 
     renderError() {
-        return ("¯\\_(ツ)_/¯");
+        return (
+            <div>
+                <Header as ="h2">¯\_(ツ)_/¯</Header>
+                <Header as ="h3">{this.randomErrorString()}</Header>
+            </div>
+        );
+    }
+
+    randomErrorString() {
+        const strings = [
+            'Can try again later?',
+            'Paiseh, bo eng',
+        ]
+        return strings[Date.now() % 2];
     }
 
 }
