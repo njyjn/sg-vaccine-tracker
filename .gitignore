@@ -32,3 +32,5 @@ yarn-error.log*
 */.elasticbeanstalk/app_versions/
 
 .env
+.env.staging
+.env.prod

@@ -49,18 +49,13 @@ export default class App extends Component<AppProps, AppState> {
                   target="_blank"
                   rel="noopener noreferrer"
                 >latest government statistics</a>. Attempts are made to retrieve data from aforementioned sources daily but is not guaranteed to be up to date. No affiliation with any government entity. Use at your own risk. 
-                Meta photo by <a
-                  className="App-link"
-                  href="https://unsplash.com/@shawnanggg?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >Shawn Ang</a> on <a
+                Meta photo from <a
                   className="App-link"
                   href="https://unsplash.com/@shawnanggg?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText"
                   target="_blank"
                   rel="noopener noreferrer"
                 >Unsplash</a>.</p>
-                <p><Icon name="github" inverted /><a
+                <p><Icon name="github" /><a
                   className="App-link"
                   href="https://www.github.com/njyjn/sg-vaccine-tracker"
                   target="_blank"
