@@ -1,3 +1,3 @@
 cd ..
-git subtree push --prefix client heroku main
+git subtree push --prefix client $1 main
 cd client

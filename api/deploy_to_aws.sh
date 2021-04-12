@@ -1,1 +1,1 @@
-sls deploy -v --aws-profile serverless
+sls deploy -v --stage $1 --aws-profile serverless
