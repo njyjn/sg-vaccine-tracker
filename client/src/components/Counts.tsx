@@ -60,7 +60,18 @@ export class Counts extends React.PureComponent<CountsProps, CountsState> {
                 <Grid.Column textAlign="center">
                     <Icon size="big" name="syringe" color="red" inverted />
                     <Header size="small" inverted>
-                        {new Date(this.state.count.dateAsOf).toLocaleDateString(undefined, { timeZone: 'Asia/Singapore' })}
+                        {
+                            new Date(this.state.count.dateAsOf).toLocaleDateString(
+                                'en-SG',
+                                {
+                                    weekday: 'short',
+                                    day: 'numeric',
+                                    month: 'short',
+                                    year: 'numeric',
+                                    timeZone: 'Asia/Singapore'
+                                }
+                            )
+                        }
                     </Header>
                     <Header size="huge" inverted>
                         {percent}%
