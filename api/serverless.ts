@@ -51,14 +51,19 @@ const serverlessConfiguration: AWS = {
     },
     apiKeys: [
       {
-        SGVTDev: [
-          'sgvtDevKey'
+        free: [
+          "${self:provider.environment.API_KEY_NAME}-free"
+        ]
+      },
+      {
+        paid: [
+          "${self:provider.environment.API_KEY_NAME}-paid"
         ]
       }
     ],
     usagePlan: [
       {
-        SGVTDev: {
+        free: {
           quota: {
             limit: 5000,
             offset: 2,
@@ -69,12 +74,26 @@ const serverlessConfiguration: AWS = {
             rateLimit: 5
           }
         }
+      },
+      {
+        paid: {
+          quota: {
+            limit: 50000,
+            offset: 1,
+            period: 'MONTH'
+          },
+          throttle: {
+            burstLimit: 2000,
+            rateLimit: 1000
+          }
+        }
       }
     ],
     environment: {
       AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
       COUNTS_TABLE: "sgvt-counts-${self:provider.stage}",
       STAT_URL: 'https://www.moh.gov.sg/covid-19/vaccination',
+      API_KEY_NAME: "sgvt-${self:provider.stage}-key",
     },
     lambdaHashingVersion: '20201221',
     iamRoleStatements: [
