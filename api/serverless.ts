@@ -102,7 +102,7 @@ const serverlessConfiguration: AWS = {
             method: 'get',
             path: 'counts/latest',
             cors: true,
-            private: true,
+            // private: true,
           }
         }
       ]
