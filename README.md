@@ -4,27 +4,29 @@
 
 This project consists of two components
 
-- [Web scraper](api/) that gets the latest vaccine count data from MOH, hosted on AWS Lambda and stored in AWS DynamoDB. Presented as a private API for the front end
+- [Web scraper](api/) that gets the latest vaccine count data from MOH, hosted on AWS Lambda and stored in AWS DynamoDB. Presented as a private API for the front end. Notifications enabled, sends an update to Slack when new data is available.
 - React [front end](client/) that presents the latest vaccine data, hosted on Heroku
 
 Do open the respective READMEs for more information
 
 ## Calculating the Percentage
 
-The percentage data point presented takes the total number of fully vaccinated persons in the country and divides it against the total number of residents and non residents in Singapore. It is the value as of the date which the authorities last updated their counts.
+The percentage data point presented takes the total number of fully vaccinated persons in the country and divides it against the total number of residents and non residents in Singapore. It is the value as-of the date which the authorities last updated their counts.
 
-Currently, data is limited and not updated often; it looks like the updates are only taking place once a week. If and when more data is available to the public, I may consider presenting regional statistics (vaccination per age group, per locale, etc.)
+Currently, data is limited and not updated often; it looks like the updates are only taking place once a week. If and when more data is available to the public, I may consider presenting regional/demographical statistics (vaccination per age group, per locale, etc.)
 
 ## Disclaimer
 
-Best efforts are made to represent the latest and most accurate data from the following sources  which are publicly available
+Best efforts are made to represent the latest and most accurate data from the following sources which are publicly available
 
 1. [Ministry of Health (Singapore) COVID-19 Vaccination](https://www.moh.gov.sg/covid-19/vaccination)
 2. [Department of Statistics Singapore - Population and Population Structure](https://www.singstat.gov.sg/find-data/search-by-theme/population/population-and-population-structure/latest-data)
 
-To minimize the load on those services without causing disruption, data is scraped only once a day and stored in this project's own backend databases.
+To minimize the load on those services without causing disruption to said agencies, data is scraped only once a day and stored in this project's own backend databases.
 
-Use at your own risk.
+In keeping with the spirit of open and equitable access to data, a limited portion of the API I built to populate the website is publicly available, on purpose. I will leave it to the advanced users to learn of the URL. I do have the option to secure it with a public API key (which lets me impose rate limits and throttles), but I won't even though my infrastructure costs may increase. It is my hope that the community will use it responsibly and fairly towards the betterment of our country and the World.
+
+I am not affiliated to any government entity. Use all information and derived data at your own risk.
 
 ## Contributors
 

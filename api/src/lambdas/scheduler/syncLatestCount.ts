@@ -1,6 +1,9 @@
 import { APIGatewayProxyEvent, APIGatewayProxyHandler, APIGatewayProxyResult } from "aws-lambda";
 import { getHtmlContent, createOrUpdateCount, checkCountExists } from 'src/logic/count';
 import { Count } from "src/models/Count";
+import { publishToTopic } from 'src/notificationLayer/notificationAccess'
+
+const topicName = process.env.NEW_DATAPOINT_TOPIC_NAME;
 
 export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
     console.log('Processing event: ', event);
@@ -16,6 +19,7 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
         let result: Count;
         if (!alreadyExists) {
             result = await createOrUpdateCount(count);
+            await publishToTopic(topicName, 'NewDatapoint', result);
             response = {
                 statusCode: 201,
                 headers: {
@@ -37,7 +41,7 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
             };
         }
     } catch (e) {
-        console.log('Failed to create latest count: ', e);
+        console.log('Failed to process latest count: ', e);
         response = {
             statusCode: 500,
             headers: {

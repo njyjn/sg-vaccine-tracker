@@ -2,6 +2,7 @@ import type { AWS } from '@serverless/typescript';
 
 const serverlessConfiguration: AWS = {
   service: 'sg-vaccine-tracker',
+  variablesResolutionMode: '20210326',
   frameworkVersion: '2',
   custom: {
     webpack: {
@@ -91,9 +92,14 @@ const serverlessConfiguration: AWS = {
     ],
     environment: {
       AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
+      DEPLOY_STAGE: "${self:provider.stage}",
       COUNTS_TABLE: "sgvt-counts-${self:provider.stage}",
       STAT_URL: 'https://www.moh.gov.sg/covid-19/vaccination',
       API_KEY_NAME: "sgvt-${self:provider.stage}-key",
+      NEW_DATAPOINT_TOPIC_NAME: "sgvt-newDatapointTopic-${self:provider.stage}",
+      AWS_ACCOUNT_ID: {
+        "Fn::Sub": "${AWS::AccountId}"
+      },
     },
     lambdaHashingVersion: '20201221',
     iamRoleStatements: [
@@ -105,6 +111,24 @@ const serverlessConfiguration: AWS = {
           'dynamodb:GetItem',
         ],
         Resource: "arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.COUNTS_TABLE}",
+      },
+      {
+        Effect: 'Allow',
+        Action: [
+          'sns:Publish'
+        ],
+        Resource: {
+          "Fn::Sub": "arn:aws:sns:${AWS::Region}:${AWS::AccountId}:${self:provider.environment.NEW_DATAPOINT_TOPIC_NAME}",
+        }
+      },
+      {
+        Effect: 'Allow',
+        Action: [
+          'kms:Decrypt'
+        ],
+        Resource: {
+          "Fn::GetAtt": ['KMSKey', 'Arn']
+        }
       },
     ],
     stage: "${opt:stage, 'dev'}",
@@ -157,7 +181,30 @@ const serverlessConfiguration: AWS = {
           }
         }
       ]
-    }
+    },
+    SubscribeNewDatapointTopic: {
+      environment: {
+        SLACK_BOT_TOKEN: "${ssm(${self:provider.region}):sgvt-slack-bot-token}",
+        SLACK_TEST_CHANNEL: "${ssm(${self:provider.region}):sgvt-slack-test-channel}",
+        SLACK_NOTIFICATION_CHANNEL: "${(${self:provider.region})ssm:sgvt-slack-notification-channel}",
+      },
+      handler: 'src/lambdas/sns/subscribeNewDatapointTopic.handler',
+      events: [
+        {
+          sns: {
+            arn: {
+              "Fn::Sub": "arn:aws:sns:${AWS::Region}:${AWS::AccountId}:${self:provider.environment.NEW_DATAPOINT_TOPIC_NAME}"
+            },
+            topicName: "${self:provider.environment.NEW_DATAPOINT_TOPIC_NAME}",
+            filterPolicy: {
+              channel: [
+                'NewDatapoint'
+              ]
+            }
+          }
+        }
+      ]
+    },
   },
   resources: {
     Resources: {
@@ -187,7 +234,48 @@ const serverlessConfiguration: AWS = {
           BillingMode: 'PAY_PER_REQUEST',
           TableName: "${self:provider.environment.COUNTS_TABLE}"
         }
-      }
+      },
+      NewDatapointTopic: {
+        Type: 'AWS::SNS::Topic',
+        Properties: {
+          DisplayName: 'New datapoint topic',
+          TopicName: "${self:provider.environment.NEW_DATAPOINT_TOPIC_NAME}",
+        }
+      },
+      KMSKey: {
+        Type: 'AWS::KMS::Key',
+        Properties: {
+          Description: 'KMS key to encrypt secrets',
+          KeyPolicy: {
+            Version: '2012-10-17',
+            Id: 'key-default-1',
+            Statement: [
+              {
+                Sid: 'Allow administration of the key',
+                Effect: 'Allow',
+                Principal: {
+                  AWS: {
+                    "Fn::Sub": "arn:aws:iam::${AWS::AccountId}:root"
+                  }
+                },
+                Action: [
+                  'kms:*'
+                ],
+                Resource: '*',
+              }
+            ]
+          }
+        }
+      },
+      KMSKeyAlias: {
+        Type: 'AWS::KMS::Alias',
+        Properties: {
+          AliasName: 'alias/sgvt-kmskey-${self:provider.stage}',
+          TargetKeyId: {
+            Ref: 'KMSKey'
+          }
+        }
+      },
     }
   }
 };
