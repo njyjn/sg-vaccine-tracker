@@ -123,14 +123,14 @@ const serverlessConfiguration: AWS = {
     SyncLatestCount: {
       handler: 'src/lambdas/scheduler/syncLatestCount.handler',
       events: [
-        {
-          http: {
-            method: 'post',
-            path: 'counts',
-            cors: true,
-            private: true,
-          }
-        },
+        // {
+        //   http: {
+        //     method: 'post',
+        //     path: 'counts',
+        //     cors: true,
+        //     private: true,
+        //   }
+        // },
         {
           schedule: {
             rate: 'cron(0 12 * * ? *)',
