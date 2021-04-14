@@ -1,0 +1,20 @@
+.Cert {
+  text-align: center;
+}
+
+.Cert-container {
+  background-color:whitesmoke;
+  padding-left: 10%;
+  padding-right: 10%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: black;
+  outline: inset;
+  outline-offset: -30px;
+  outline-width: thick;
+  pointer-events: none;
+}
