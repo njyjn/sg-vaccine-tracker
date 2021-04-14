@@ -2,7 +2,7 @@ import * as React from 'react';
 import { getLatestCount } from '../api/counts-api';
 import { Count } from '../types/Count';
 
-import { Dimmer, Grid, Header, Loader, Progress, Icon} from 'semantic-ui-react';
+import { Dimmer, Grid, Header, Loader, Progress, Image} from 'semantic-ui-react';
 import 'semantic-ui-css/semantic.min.css';
 
 interface CountsProps {};
@@ -34,31 +34,38 @@ export class Counts extends React.PureComponent<CountsProps, CountsState> {
         } catch (e) {
             // alert('Failed to fetch latest update. Please try again later');
             this.setState({
-                loadingFailed: true
+                loadingFailed: true,
+                loadingCount: false
             })
         }
     };
 
     render() {
         return (
-            this.renderCount()
+            this.renderPage()
         )
-    }
+    };
 
-    renderCount() {
+    renderPage() {
         if (this.state.loadingFailed) {
             return this.renderError();
         }
         if (this.state.loadingCount) {
             return this.renderLoading();
         }
+        return (
+            this.renderCount()
+        )
+    };
+
+    renderCount() {
         const value = this.state.count.value
         const percent = Math.round(value / 5685800 * 10000.0) / 100;
         console.log(percent)
         return (
             <Grid.Row>
                 <Grid.Column textAlign="center">
-                    <Icon size="big" name="syringe" color="red" inverted />
+                    <Image src='/logo512.png' size='small' centered rounded></Image>
                     <Header size="small" inverted>
                         {
                             new Date(this.state.count.dateAsOf).toLocaleDateString(
