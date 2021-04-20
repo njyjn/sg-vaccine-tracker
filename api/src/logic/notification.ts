@@ -1,15 +1,24 @@
 import { Count } from "src/models/Count";
 import { postToSlack } from "src/notificationLayer/slackAccess";
+import { postToTwitter } from "src/notificationLayer/twitterAccess";
+import { calculatePercentage } from "./count";
 
 export async function processNewDatapoint(event: Count): Promise<void> {
     try {
-        const countCumulative = event.value.toString();
+        const countCumulativeInt: number = event.value;
+        const countCumulative: string = event.value.toString();
         const type = event.type.toString();
         const dateAsOf = event.dateAsOf.toString();
         const dateAsOfDate = new Date(dateAsOf).toLocaleDateString(undefined, { timeZone: 'Asia/Singapore' });
-        
+
         const messageText = `I found new data on the MOH website today. As of ${dateAsOfDate}, ${countCumulative} Singaporeans have been \`${type}\``;
-        await postToSlack(messageText);    
+        await postToSlack(messageText);
+
+        const percent = calculatePercentage(countCumulativeInt);
+        const progressBar = createProgessBar(countCumulativeInt, mahjongBar);
+
+        const tweetText = `${percent}%\n${progressBar}`;
+        await postToTwitter(tweetText);
     } catch (e) {
         console.log('Failed to process data point', e);
     }
