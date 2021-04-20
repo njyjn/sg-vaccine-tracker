@@ -1,6 +1,8 @@
 import { APIGatewayProxyEvent, APIGatewayProxyHandler, APIGatewayProxyResult } from "aws-lambda";
 import { getLatestCount } from 'src/logic/count';
 
+const stageOrigin = process.env.STAGE_ORIGIN;
+
 export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
     console.log('Processing event: ', event);
 
@@ -10,7 +12,7 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
         response = {
             statusCode: 200,
             headers: {
-                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Origin': stageOrigin,
             },
             body: JSON.stringify({
                 ...count
@@ -21,7 +23,7 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
         response = {
             statusCode: 400,
             headers: {
-                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Origin': stageOrigin,
             },
             body: JSON.stringify({
                 error: e,
