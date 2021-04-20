@@ -3,6 +3,8 @@ import { postToSlack } from "src/notificationLayer/slackAccess";
 import { postToTwitter } from "src/notificationLayer/twitterAccess";
 import { calculatePercentage } from "./count";
 
+const stage = process.env.DEPLOY_STAGE;
+
 export async function processNewDatapoint(event: Count): Promise<void> {
     try {
         const countCumulativeInt: number = event.value;
@@ -18,7 +20,11 @@ export async function processNewDatapoint(event: Count): Promise<void> {
         const progressBar = createProgessBar(countCumulativeInt, mahjongBar);
 
         const tweetText = `${percent}%\n${progressBar}`;
-        await postToTwitter(tweetText);
+        if (stage === 'prod') {
+            await postToTwitter(tweetText);
+        } else {
+            console.log(`Skipping sending '${tweetText}' to Twitter as not in Production`);
+        }
     } catch (e) {
         console.log('Failed to process data point', e);
     }
