@@ -6,6 +6,7 @@ const bearer_token = process.env.TWITTER_BEARER_TOKEN;
 
 export async function postToTwitter(text: string): Promise<void> {
     try {
+        const uriEncodedText = encodeURI(text);
         const twitter = new Twitter({
             consumer_key: consumer_key,
             consumer_secret: consumer_secret,
@@ -14,7 +15,7 @@ export async function postToTwitter(text: string): Promise<void> {
         const tweet = await twitter.post(
             'statuses/update',
             {
-                status: text
+                status: uriEncodedText
             }
         );
         console.log(`Tweeted ${text} as ${tweet.id_str}`);
