@@ -65,7 +65,7 @@ export class Counts extends React.PureComponent<CountsProps, CountsState> {
         return (
             <Grid.Row>
                 <Grid.Column textAlign="center">
-                    <Image src='/logo512.png' size='small' centered rounded></Image>
+                    <Image src='/logo192.png' size='small' centered></Image>
                     <Header size="small" inverted>
                         {
                             new Date(this.state.count.dateAsOf).toLocaleDateString(
