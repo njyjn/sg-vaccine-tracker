@@ -1,10 +1,23 @@
 import type { AWS } from '@serverless/typescript';
+import { slsCorsOrigins } from 'src/config';
 
 const serverlessConfiguration: AWS = {
   service: 'sg-vaccine-tracker',
   variablesResolutionMode: '20210326',
   frameworkVersion: '2',
   custom: {
+    cors: {
+      origin: slsCorsOrigins,
+      headers: [
+        'Content-Type',
+        'X-Amz-Date',
+        'Authorization',
+        'X-Api-Key',
+        'X-Amz-Security-Token',
+        'X-Amz-User-Agent',
+      ],
+      allowCredentials: false
+    },
     webpack: {
       webpackConfig: './webpack.config.js',
       includeModules: true,
@@ -39,10 +52,16 @@ const serverlessConfiguration: AWS = {
     }
   },
   plugins: [
+    'serverless-dotenv-plugin',
+    'serverless-offline-ssm',
     'serverless-webpack',
     'serverless-dynamodb-local',
     'serverless-offline',
   ],
+  package: {
+    excludeDevDependencies: true,
+    individually: true
+  },
   provider: {
     name: 'aws',
     runtime: 'nodejs14.x',
@@ -145,7 +164,9 @@ const serverlessConfiguration: AWS = {
           http: {
             method: 'get',
             path: 'counts/latest',
-            cors: true,
+            cors: {
+              Ref: "${self:custom.cors}"
+            },
             // private: true,
           }
         }
