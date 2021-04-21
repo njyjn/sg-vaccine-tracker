@@ -16,10 +16,8 @@ export async function processNewDatapoint(event: Count): Promise<void> {
         const messageText = `I found new data on the MOH website today. As of ${dateAsOfDate}, ${countCumulative} Singaporeans have been \`${type}\``;
         await postToSlack(messageText);
 
-        const percent = calculatePercentage(countCumulativeInt);
-        const progressBar = createProgessBar(countCumulativeInt, mahjongBar);
+        const tweetText = buildTweet(countCumulativeInt, mahjongBar);
 
-        const tweetText = `${percent}%\n${progressBar}`;
         if (stage === 'prod') {
             await postToTwitter(tweetText);
         } else {
@@ -36,7 +34,14 @@ const mahjongBar: Array<String> = [
 
 const defaultBar: Array<String> = [
     '_','-','-','-','-','-','-','-','-','-','-'
-]
+];
+
+function buildTweet(count: number, style?: Array<String>, total?: number): string {
+    const percent = calculatePercentage(count, total);
+    const progressBar = createProgessBar(percent, style);
+
+    return `${percent}%\n${progressBar}`;
+};
 
 function createProgessBar(percent: number, style?: Array<String>): string {
     const barStyle = style || defaultBar;
@@ -59,6 +64,7 @@ function createProgessBar(percent: number, style?: Array<String>): string {
 export let testables;
 if (process.env.NODE_ENV === 'test') {
     testables = {
+        buildTweet: buildTweet,
         createProgessBar: createProgessBar,
         mahjongBar: mahjongBar,
     }
