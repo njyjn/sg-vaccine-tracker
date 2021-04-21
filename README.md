@@ -1,5 +1,7 @@
 # SG Vaccine Tracker
 
+![api unit test status](https://github.com/njyjn/sg-vaccine-tracker/actions/workflows/api.yml/badge.svg)
+
 ![Demo](/client/public/demo.png)
 
 This project consists of two components

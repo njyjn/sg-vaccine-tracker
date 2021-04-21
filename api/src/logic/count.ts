@@ -4,6 +4,7 @@ import { CountAccess } from 'src/dataLayer/countAccess';
 import { parse } from 'node-html-parser';
 
 const statUrl = process.env.STAT_URL;
+const populationTotal = process.env.POPULATION_TOTAL;
 
 const countAccess = new CountAccess();
 
@@ -17,7 +18,8 @@ export async function getAllCounts(limit?: number, nextKey?: string): Promise<[C
 
 export async function getLatestCount(type?: string): Promise<Count> {
     // TODO: Implement type filtered in countAccess layer
-    // let countType = type || 'fullyVaccinated';
+    //@ts-ignore
+    let countType = type || 'fullyVaccinated';
     try {
         const counts = await countAccess.getAllCounts();
         const sorted = counts[0].sort((a,b) => {
@@ -79,3 +81,8 @@ function parseDateFromHeader(header:string): string {
     console.log('Date read as', match);
     return match;
 };
+
+export function calculatePercentage(value: number, total?: number): number {
+    const realTotal = total || parseInt(populationTotal);
+    return Math.round((value / realTotal) * 10000.0) / 100;
+}

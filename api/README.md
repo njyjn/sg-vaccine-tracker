@@ -1,5 +1,7 @@
 # SG Vaccine Tracker API
 
+![unit test status](https://github.com/njyjn/sg-vaccine-tracker/actions/workflows/api.yml/badge.svg)
+
 This component is a privately accessible API that scrapes data from MOH's vaccination portal on a daily basis. It consists of the following
 
 - Daily scraper to read vaccination data from MOH
