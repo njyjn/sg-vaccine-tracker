@@ -1,7 +1,47 @@
 [
     {
-        "dateAsOf": "2021-04-01T00:00:00.000Z",
-        "value": 100000,
-        "type": "fullyVaccinated"
+       "dateAsOf": "2021-04-03T00:00:00.000Z",
+        "type": "fullyVaccinated",
+        "value": 468000,
+        "totalPopulation": 5685800,
+        "percentage": 8.23,
+        "dateAsOfPrevious": "2021-01-27T00:00:00.000Z",
+        "daysElapsedSincePrevious": 66,
+        "valuePrevious": 50,
+        "percentagePrevious": 0,
+        "percentageChange": 8.23,
+        "valueChange": 467950,
+        "valueChangeAvgPerDay": 7090,
+        "percentChangeDelta": 8.23
+    },
+    {
+        "dateAsOf": "2021-04-06T00:00:00.000Z",
+        "type": "fullyVaccinated",
+        "value": 535864,
+        "totalPopulation": 5685800,
+        "percentage": 9.42,
+        "dateAsOfPrevious": "2021-04-03T00:00:00.000Z",
+        "daysElapsedSincePrevious": 3,
+        "valuePrevious": 468000,
+        "percentagePrevious": 8.23,
+        "percentageChange": 1.19,
+        "valueChange": 67864,
+        "valueChangeAvgPerDay": 22621,
+        "percentChangeDelta": -7.04
+    },
+    {
+        "dateAsOf": "2021-04-18T00:00:00.000Z",
+        "type": "fullyVaccinated",
+        "value": 849764,
+        "totalPopulation": 5685800,
+        "percentage": 14.95,
+        "dateAsOfPrevious": "2021-04-06T00:00:00.000Z",
+        "daysElapsedSincePrevious": 12,
+        "valuePrevious": 535864,
+        "percentagePrevious": 9.42,
+        "percentageChange": 5.53,
+        "valueChange": 313900,
+        "valueChangeAvgPerDay": 26158,
+        "percentChangeDelta": 4.34
     }
 ]

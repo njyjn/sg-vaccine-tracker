@@ -89,7 +89,9 @@ export function calculateHistoricals(countPartial: Count, lastCount: Count): Cou
     }
     const percentageChange = Math.round((percentage - lastCount.percentage) * 100) / 100.0;
     const percentChangeDelta = Math.round((percentageChange - lastCount.percentageChange) * 100) / 100.0;
-    const daysElapsedSincePrevious = (Date.parse(countPartial.dateAsOf) - Date.parse(lastCount.dateAsOf)) / (1000 * 3600 * 24)
+    const daysElapsedSincePrevious = (Date.parse(countPartial.dateAsOf) - Date.parse(lastCount.dateAsOf)) / (1000 * 3600 * 24);
+    const valueChange = countPartial.value - lastCount.value;
+    const valueChangeAvgPerDay = Math.round(valueChange / daysElapsedSincePrevious);
     const countWithHistoricals = {
         ...countPartial,
         totalPopulation: parseInt(populationTotal),
@@ -99,7 +101,8 @@ export function calculateHistoricals(countPartial: Count, lastCount: Count): Cou
         valuePrevious: lastCount.value,
         percentagePrevious: lastCount.percentage,
         percentageChange: percentageChange,
-        valueChange: countPartial.value - lastCount.value,
+        valueChange: valueChange,
+        valueChangeAvgPerDay: valueChangeAvgPerDay,
         percentChangeDelta: percentChangeDelta,
     } as Count;
     console.log(`Calculated historicals:`, countWithHistoricals);

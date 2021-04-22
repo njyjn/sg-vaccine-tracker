@@ -22,6 +22,7 @@ describe('no initial data', () => {
             percentagePrevious: 0,
             percentageChange: 8.23,
             valueChange: 467950,
+            valueChangeAvgPerDay: 7090,
             percentChangeDelta: 8.23,
         });
     });    
@@ -47,6 +48,7 @@ describe('previous data 4/3/2021 on 4/6/2021', () => {
                 percentagePrevious: 0,
                 percentageChange: 8.23,
                 valueChange: 468000,
+                valueChangeAvgPerDay: 7090,
                 percentChangeDelta: 8.23,    
             } as Count,
         )).toEqual({
@@ -61,6 +63,7 @@ describe('previous data 4/3/2021 on 4/6/2021', () => {
             percentagePrevious: 8.23,
             percentageChange: 1.19,
             valueChange: 67864,
+            valueChangeAvgPerDay: 22621,
             percentChangeDelta: -7.04,
         });
     });    
@@ -86,6 +89,7 @@ describe('previous data 4/6/2021 on 4/18/2021', () => {
                 percentagePrevious: 8.23,
                 percentageChange: 1.19,
                 valueChange: 67864,
+                valueChangeAvgPerDay: 22621,
                 percentChangeDelta: -7.04,
             } as Count,
         )).toEqual({
@@ -100,6 +104,7 @@ describe('previous data 4/6/2021 on 4/18/2021', () => {
             percentagePrevious: 9.42,
             percentageChange: 5.53,
             valueChange: 313900,
+            valueChangeAvgPerDay: 26158,
             percentChangeDelta: 4.34,
         });
     });    

@@ -10,5 +10,6 @@ export interface Count {
     percentagePrevious?: number,
     percentageChange?: number,
     valueChange?: number,
+    valueChangeAvgPerDay?: number,
     percentChangeDelta?: number,
 };
