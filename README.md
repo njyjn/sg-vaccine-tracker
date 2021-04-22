@@ -1,5 +1,7 @@
 # SG Vaccine Tracker
 
+![api unit test status](https://github.com/njyjn/sg-vaccine-tracker/actions/workflows/api.yml/badge.svg)
+
 ![Demo](/client/public/demo.png)
 
 This project consists of two components
@@ -9,9 +11,20 @@ This project consists of two components
 
 Do open the respective READMEs for more information
 
-## Calculating the Percentage
+## Calculating the Data
+
+### Percentage
 
 The percentage data point presented takes the total number of fully vaccinated persons in the country and divides it against the total number of residents and non residents in Singapore. It is the value as-of the date which the authorities last updated their counts.
+
+### Metrics
+
+A number of metrics are now presented alongside the percentage. They are
+
+- **Latest total number of fully vaccinated people**
+- **Change in percentage and number of fully vaccinated people since the last update**
+- **Average daily change in percentage and number of fully vaccinated people since the last update** -- since updates are sporadic, this metric is a rough approximation
+- **Change in average daily change across the current and previous update window**. This metric can be used to gauge whether the pace at which number of people becoming fully vaccinated is quickening or slowing down.
 
 Currently, data is limited and not updated often; it looks like the updates are only taking place once a week. If and when more data is available to the public, I may consider presenting regional/demographical statistics (vaccination per age group, per locale, etc.)
 
@@ -21,6 +34,8 @@ Best efforts are made to represent the latest and most accurate data from the fo
 
 1. [Ministry of Health (Singapore) COVID-19 Vaccination](https://www.moh.gov.sg/covid-19/vaccination)
 2. [Department of Statistics Singapore - Population and Population Structure](https://www.singstat.gov.sg/find-data/search-by-theme/population/population-and-population-structure/latest-data)
+
+Historical data for the period preceding 4/3/21 was obtained from [Our World In Data](https://ourworldindata.org/covid-vaccinations)
 
 To minimize the load on those services without causing disruption to said agencies, data is scraped only once a day and stored in this project's own backend databases.
 

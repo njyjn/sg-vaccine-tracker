@@ -1,10 +1,23 @@
 import type { AWS } from '@serverless/typescript';
+import { slsCorsOrigins } from 'src/config';
 
 const serverlessConfiguration: AWS = {
   service: 'sg-vaccine-tracker',
   variablesResolutionMode: '20210326',
   frameworkVersion: '2',
   custom: {
+    cors: {
+      origin: slsCorsOrigins,
+      headers: [
+        'Content-Type',
+        'X-Amz-Date',
+        'Authorization',
+        'X-Api-Key',
+        'X-Amz-Security-Token',
+        'X-Amz-User-Agent',
+      ],
+      allowCredentials: false
+    },
     webpack: {
       webpackConfig: './webpack.config.js',
       includeModules: true,
@@ -36,13 +49,24 @@ const serverlessConfiguration: AWS = {
           ]
         }
       }
+    },
+    'serverless-offline-ssm': {
+      stages: [
+        'local'
+      ]
     }
   },
   plugins: [
+    'serverless-offline-ssm',
+    'serverless-dotenv-plugin',
     'serverless-webpack',
     'serverless-dynamodb-local',
     'serverless-offline',
   ],
+  package: {
+    excludeDevDependencies: true,
+    individually: true
+  },
   provider: {
     name: 'aws',
     runtime: 'nodejs14.x',
@@ -145,7 +169,9 @@ const serverlessConfiguration: AWS = {
           http: {
             method: 'get',
             path: 'counts/latest',
-            cors: true,
+            cors: {
+              Ref: "${self:custom.cors}"
+            },
             // private: true,
           }
         }
@@ -187,7 +213,10 @@ const serverlessConfiguration: AWS = {
       environment: {
         SLACK_BOT_TOKEN: "${ssm(${self:provider.region}):sgvt-slack-bot-token}",
         SLACK_TEST_CHANNEL: "${ssm(${self:provider.region}):sgvt-slack-test-channel}",
-        SLACK_NOTIFICATION_CHANNEL: "${(${self:provider.region})ssm:sgvt-slack-notification-channel}",
+        SLACK_NOTIFICATION_CHANNEL: "${ssm(${self:provider.region}):sgvt-slack-notification-channel}",
+        TWITTER_CONSUMER_KEY: "${ssm(${self:provider.region}):sgvt-twitter-api-key}",
+        TWITTER_SECRET_KEY: "${ssm(${self:provider.region}):sgvt-twitter-api-secret-key}",
+        TWITTER_BEARER_TOKEN: "${ssm(${self:provider.region}):sgvt-twitter-bearer-token}",
       },
       handler: 'src/lambdas/sns/subscribeNewDatapointTopic.handler',
       events: [

@@ -1,7 +1,10 @@
-import { APIGatewayProxyEvent, APIGatewayProxyHandler, APIGatewayProxyResult } from "aws-lambda";
+import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
 import { getLatestCount } from 'src/logic/count';
+import { corsOptions } from 'src/config';
+import middy from '@middy/core';
+import cors from '@middy/http-cors';
 
-export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
+export const handler = middy(async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
     console.log('Processing event: ', event);
 
     let response;
@@ -9,9 +12,6 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
         const count = await getLatestCount();
         response = {
             statusCode: 200,
-            headers: {
-                'Access-Control-Allow-Origin': '*',
-            },
             body: JSON.stringify({
                 ...count
             })
@@ -20,9 +20,6 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
         console.log('Failed to fetch latest count: ', e);
         response = {
             statusCode: 400,
-            headers: {
-                'Access-Control-Allow-Origin': '*',
-            },
             body: JSON.stringify({
                 error: e,
             })
@@ -30,4 +27,6 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
     } finally {
         return response;
     }
-};
+});
+
+handler.use(cors(corsOptions));

@@ -1,5 +1,7 @@
 # SG Vaccine Tracker API
 
+![unit test status](https://github.com/njyjn/sg-vaccine-tracker/actions/workflows/api.yml/badge.svg)
+
 This component is a privately accessible API that scrapes data from MOH's vaccination portal on a daily basis. It consists of the following
 
 - Daily scraper to read vaccination data from MOH
@@ -29,7 +31,7 @@ Any interfacing with the data service, in this case AWS DynamoDB, is done in fil
 
 ### Notification Layer
 
-An interface with the notification service, in this case AWS Simple Notification Service and Slack, can be done in files within the `src/notificationLayer` directory. The Slack Web API has been used to enable this feature.
+An interface with the notification service, in this case AWS Simple Notification Service and Slack, can be done in files within the `src/notificationLayer` directory. The Slack Web API and Twitter APIs have been used to enable this feature.
 
 ### Lambdas
 
@@ -45,12 +47,25 @@ For offline testing, run `sls offline start --stage local`. Before this command 
 
 Then, use the client or query the API using Postman. There should be a single data point seeded.
 
+Unit tests are now enabled for this component via Jest. To run, use `npm run test`
+
 ### Configuring SNS and tokens
 
-Offline testing with SNS is currently not supported.
+Offline testing with SNS is now supported via the serverless-offline-ssm plugin. To use, create a `.env` file for local use with the following parameters
 
-AWS System Manager Parameter Store is used to store secret tokens relating to Slack. If there is a desire to hook a Slack App up, add the following parameters to AWS System Manager **manually**. A KNS key is already created as part of the serverless deploy.
+```env
+sgvt-slack-bot-token=''
+sgvt-slack-test-channel=''
+sgvt-slack-notification-channel=''
+sgvt-twitter-api-key=''
+sgvt-twitter-api-secret-key=''
+sgvt-twitter-bearer-token=''
+```
 
 - SLACK_BOT_TOKEN: The token provided by Slack
 - SLACK_TEST_CHANNEL: A test channel ID you would like non-prod notifications to be sent to. Ensure the app has been added to the channel first. The channel ID can be found via the URL path the Slack web interface, prefixed `C`
 - SLACK_NOTIFICATION_CHANNEL: A notification channel ID you would like prod notifications to be sent to.
+
+AWS System Manager Parameter Store is used to store secret tokens relating to Slack and Twitter. If not using the plugin, and if there is a desire to hook a Slack App or Twitter account up, add the above parameters to AWS System Manager **manually**. A KNS key is already created as part of the serverless deploy.
+
+Do note that Twitter requires one to petition for a developer account to access their APIs.

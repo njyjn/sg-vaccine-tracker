@@ -1,5 +1,5 @@
 import { APIGatewayProxyEvent, APIGatewayProxyHandler, APIGatewayProxyResult } from "aws-lambda";
-import { getHtmlContent, createOrUpdateCount, checkCountExists } from 'src/logic/count';
+import { calculateHistoricals, getHtmlContent, createOrUpdateCount, checkCountExists, getLatestCount } from 'src/logic/count';
 import { Count } from "src/models/Count";
 import { publishToTopic } from 'src/notificationLayer/notificationAccess'
 
@@ -18,7 +18,9 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
         const alreadyExists = await checkCountExists(count);
         let result: Count;
         if (!alreadyExists) {
-            result = await createOrUpdateCount(count);
+            const lastCount = await getLatestCount();
+            const countWithHistoricals = await calculateHistoricals(count, lastCount);
+            result = await createOrUpdateCount(countWithHistoricals);
             await publishToTopic(topicName, 'NewDatapoint', result);
             response = {
                 statusCode: 201,

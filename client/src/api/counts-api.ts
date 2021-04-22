@@ -6,7 +6,7 @@ export async function getLatestCount(): Promise<Count> {
     const response = await get(`${apiEndpoint}/counts/latest`, {
         headers: {
             'Content-Type': 'application/json'
-        },
+        }
     });
     return response.data
 };
