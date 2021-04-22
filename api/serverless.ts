@@ -208,10 +208,10 @@ const serverlessConfiguration: AWS = {
       environment: {
         SLACK_BOT_TOKEN: "${ssm(${self:provider.region}):sgvt-slack-bot-token}",
         SLACK_TEST_CHANNEL: "${ssm(${self:provider.region}):sgvt-slack-test-channel}",
-        SLACK_NOTIFICATION_CHANNEL: "${(${self:provider.region})ssm:sgvt-slack-notification-channel}",
+        SLACK_NOTIFICATION_CHANNEL: "${ssm(${self:provider.region}):sgvt-slack-notification-channel}",
         TWITTER_CONSUMER_KEY: "${ssm(${self:provider.region}):sgvt-twitter-api-key}",
         TWITTER_SECRET_KEY: "${ssm(${self:provider.region}):sgvt-twitter-api-secret-key}",
-        TWITTER_BEARER_TOKEN: "${(${self:provider.region})ssm:sgvt-twitter-bearer-token}",
+        TWITTER_BEARER_TOKEN: "${ssm(${self:provider.region}):sgvt-twitter-bearer-token}",
       },
       handler: 'src/lambdas/sns/subscribeNewDatapointTopic.handler',
       events: [
