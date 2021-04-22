@@ -4,7 +4,7 @@ import { CountAccess } from 'src/dataLayer/countAccess';
 import { parse } from 'node-html-parser';
 
 const statUrl = process.env.STAT_URL;
-const populationTotal = process.env.POPULATION_TOTAL;
+const populationTotal = process.env.POPULATION_TOTAL || '5685800';
 
 const countAccess = new CountAccess();
 
@@ -75,6 +75,42 @@ export async function createOrUpdateCount(count: Count): Promise<Count> {
 export async function checkCountExists(count: Count): Promise<boolean> {
     return await countAccess.checkCountExists(count);
 };
+
+export function calculateHistoricals(countPartial: Count, lastCount: Count): Count {
+    const percentage = calculatePercentage(countPartial.value, parseInt(populationTotal));
+    if (!lastCount) {
+        lastCount = {
+            dateAsOf: '2021-01-27T00:00:00.000Z',
+            type: 'fullyVaccinated',
+            value: 50,
+            percentage: 0,
+            percentageChange: 0,
+            percentageChangeAvgPerDay: 0,
+        }
+    }
+    const daysElapsedSincePrevious = (Date.parse(countPartial.dateAsOf) - Date.parse(lastCount.dateAsOf)) / (1000 * 3600 * 24);
+    const percentageChange = Math.round((percentage - lastCount.percentage) * 100) / 100.0;
+    const percentageChangeAvgPerDay = Math.round((percentageChange / daysElapsedSincePrevious) * 100) / 100.0;
+    const percentChangeDelta = Math.round((percentageChangeAvgPerDay - lastCount.percentageChangeAvgPerDay) * 100) / 100.0;
+    const valueChange = countPartial.value - lastCount.value;
+    const valueChangeAvgPerDay = Math.round(valueChange / daysElapsedSincePrevious);
+    const countWithHistoricals = {
+        ...countPartial,
+        totalPopulation: parseInt(populationTotal),
+        percentage: percentage,
+        dateAsOfPrevious: lastCount.dateAsOf,
+        daysElapsedSincePrevious: daysElapsedSincePrevious,
+        valuePrevious: lastCount.value,
+        percentagePrevious: lastCount.percentage,
+        percentageChange: percentageChange,
+        percentageChangeAvgPerDay: percentageChangeAvgPerDay,
+        valueChange: valueChange,
+        valueChangeAvgPerDay: valueChangeAvgPerDay,
+        percentChangeDelta: percentChangeDelta,
+    } as Count;
+    console.log(`Calculated historicals:`, countWithHistoricals);
+    return countWithHistoricals;
+}
 
 function parseDateFromHeader(header:string): string {
     const match = header.match(/Vaccination Data \(as of (\d{1,2}\s\D{3}\s\d{4})\)/)[1]
