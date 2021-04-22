@@ -49,11 +49,16 @@ const serverlessConfiguration: AWS = {
           ]
         }
       }
+    },
+    'serverless-offline-ssm': {
+      stages: [
+        'local'
+      ]
     }
   },
   plugins: [
-    'serverless-dotenv-plugin',
     'serverless-offline-ssm',
+    'serverless-dotenv-plugin',
     'serverless-webpack',
     'serverless-dynamodb-local',
     'serverless-offline',
