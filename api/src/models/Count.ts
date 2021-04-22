@@ -5,6 +5,7 @@ export interface Count {
     totalPopulation?: number,
     percentage?: number,
     dateAsOfPrevious?: string,
+    daysElapsedSincePrevious?: number,
     valuePrevious?: number,
     percentagePrevious?: number,
     percentageChange?: number,
