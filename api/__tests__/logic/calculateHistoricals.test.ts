@@ -21,9 +21,10 @@ describe('no initial data', () => {
             valuePrevious: 50,
             percentagePrevious: 0,
             percentageChange: 8.23,
+            percentageChangeAvgPerDay: 0.12,
             valueChange: 467950,
             valueChangeAvgPerDay: 7090,
-            percentChangeDelta: 8.23,
+            percentChangeDelta: 0.12,
         });
     });    
 });
@@ -47,9 +48,10 @@ describe('previous data 4/3/2021 on 4/6/2021', () => {
                 valuePrevious: 0,
                 percentagePrevious: 0,
                 percentageChange: 8.23,
+                percentageChangeAvgPerDay: 0.12,
                 valueChange: 468000,
                 valueChangeAvgPerDay: 7090,
-                percentChangeDelta: 8.23,    
+                percentChangeDelta: 0.12,
             } as Count,
         )).toEqual({
             dateAsOf: '2021-04-06T00:00:00.000Z',
@@ -62,9 +64,10 @@ describe('previous data 4/3/2021 on 4/6/2021', () => {
             valuePrevious: 468000,
             percentagePrevious: 8.23,
             percentageChange: 1.19,
+            percentageChangeAvgPerDay: 0.4,
             valueChange: 67864,
             valueChangeAvgPerDay: 22621,
-            percentChangeDelta: -7.04,
+            percentChangeDelta: 0.28,
         });
     });    
 });
@@ -88,9 +91,10 @@ describe('previous data 4/6/2021 on 4/18/2021', () => {
                 valuePrevious: 468000,
                 percentagePrevious: 8.23,
                 percentageChange: 1.19,
+                percentageChangeAvgPerDay: 0.4,
                 valueChange: 67864,
                 valueChangeAvgPerDay: 22621,
-                percentChangeDelta: -7.04,
+                percentChangeDelta: 0.28,
             } as Count,
         )).toEqual({
             dateAsOf: '2021-04-18T00:00:00.000Z',
@@ -103,9 +107,10 @@ describe('previous data 4/6/2021 on 4/18/2021', () => {
             valuePrevious: 535864,
             percentagePrevious: 9.42,
             percentageChange: 5.53,
+            percentageChangeAvgPerDay: 0.46,
             valueChange: 313900,
             valueChangeAvgPerDay: 26158,
-            percentChangeDelta: 4.34,
+            percentChangeDelta: 0.06,
         });
     });    
 });

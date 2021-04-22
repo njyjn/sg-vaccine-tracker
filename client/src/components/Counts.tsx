@@ -25,6 +25,7 @@ export class Counts extends React.PureComponent<CountsProps, CountsState> {
             valuePrevious: 0,
             percentagePrevious: 0,
             percentageChange: 0,
+            percentageChangeAvgPerDay: 0,
             valueChange: 0,
             valueChangeAvgPerDay: 0,
         } as Count,
@@ -112,18 +113,18 @@ export class Counts extends React.PureComponent<CountsProps, CountsState> {
                     <Header size='tiny' inverted>{this.formatDatestringToLocale(this.state.count.dateAsOfPrevious)}</Header>
                 </Grid.Column>
                 <Grid.Column>
-                    <p>% increase</p>
+                    <p>Change</p>
                     <Header size='tiny' inverted>{this.formatChange(this.state.count.percentageChange, this.state.count.valueChange)}</Header>
                 </Grid.Column>
                 <Grid.Column>
-                    <p>Avg. increase per day</p>
-                    <Header size='tiny' inverted>{this.formatIncreaseRate(this.state.count.valueChangeAvgPerDay)}</Header>
+                    <p>Avg. change per day</p>
+                    <Header size='tiny' inverted>{this.formatIncreaseRate(this.state.count.percentageChangeAvgPerDay, this.state.count.valueChangeAvgPerDay)}</Header>
                 </Grid.Column>
                 <Popup
-                    position='bottom center'
+                    position='top center'
                     inverted
                     basic
-                    content='The difference between % increases of the current and previous updates'
+                    content='The difference between average daily % change of the current and previous updates. Can be used to infer if the pace of vaccinations has increased or decreased since the previous reporting window. Approximate since data is released sporadically.'
                     trigger={
                         <Grid.Column>
                             <p>% change delta</p>
@@ -188,10 +189,10 @@ export class Counts extends React.PureComponent<CountsProps, CountsState> {
         return `${sign}${changePercent}% (${previous})`;
     }
 
-    formatIncreaseRate(valueChangeAvgPerDay: number | undefined) {
+    formatIncreaseRate(changePercentAvgPerDay: number | undefined, valueChangeAvgPerDay: number | undefined) {
         if (!valueChangeAvgPerDay) { valueChangeAvgPerDay = 0 };
         const sign = valueChangeAvgPerDay < 0 ? '🔻' : '🔺';
-        return `${sign}${valueChangeAvgPerDay}`;
+        return `${sign}${changePercentAvgPerDay}% (${valueChangeAvgPerDay})`;
     }
 
     formatChangeDelta(percentChangeDelta: number | undefined) {
