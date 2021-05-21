@@ -1,2 +1,2 @@
 docker-compose up -d
-sls offline start -v --stage local --aws-profile serverless
+AWS_PROFILE=serverless sls offline start -v --stage local
