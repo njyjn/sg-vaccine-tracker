@@ -34,8 +34,9 @@ const serverlessConfiguration: AWS = {
         image: 'sgvt-dynamodb-local',
         port: 8000,
         noStart: true,
-        migrate: false,
+        migrate: true,
         seed: true,
+        inMemory: true,
       },
       seed: {
         invites: {
