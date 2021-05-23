@@ -1,4 +1,4 @@
-import { testables } from '../../src/logic/notification';
+import { testables } from '../../../src/logic/notification';
 
 test('builds tweet for 535,864 / 5,685,800', () => {
     expect(testables.buildTweet(535864, testables.mahjongBar, 5685800)).toBe(

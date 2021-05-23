@@ -1,4 +1,4 @@
-import { testables } from '../../src/logic/notification';
+import { testables } from '../../../src/logic/notification';
 
 describe('progress bars', () => {
     test('0/10', () => {
