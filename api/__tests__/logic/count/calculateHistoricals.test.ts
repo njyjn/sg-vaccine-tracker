@@ -1,5 +1,5 @@
-import { calculateHistoricals } from '../../src/logic/count';
-import { Count } from '../../src/models/Count';
+import { calculateHistoricals } from '../../../src/logic/count';
+import { Count } from '../../../src/models/Count';
 
 describe('no initial data', () => {
     test('calculates percentage of 8.23 and no historicals', () => {
