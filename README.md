@@ -11,6 +11,8 @@ This project consists of two components
 
 Do open the respective READMEs for more information
 
+Contributing? Read the Contribution Guide [here](CONTRIBUTING.md).
+
 ## Calculating the Data
 
 ### Percentage
