@@ -4,7 +4,7 @@
   "description": "Serverless aws-nodejs-typescript template",
   "main": "serverless.ts",
   "scripts": {
-    "test": "npx jest --runInBand --bail"
+    "test": "TZ=UTC npx jest --runInBand --bail"
   },
   "engines": {
     "node": ">=12.21.0"
