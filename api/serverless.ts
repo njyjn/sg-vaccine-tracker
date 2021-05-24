@@ -211,13 +211,13 @@ const serverlessConfiguration: AWS = {
     },
     SubscribeNewDatapointTopic: {
       environment: {
-        SLACK_BOT_TOKEN: "${ssm(${self:provider.region}):sgvt-slack-bot-token}",
-        SLACK_TEST_CHANNEL: "${ssm(${self:provider.region}):sgvt-slack-test-channel}",
-        SLACK_NOTIFICATION_CHANNEL: "${ssm(${self:provider.region}):sgvt-slack-notification-channel}",
-        TWITTER_CONSUMER_KEY: "${ssm(${self:provider.region}):sgvt-twitter-api-key}",
-        TWITTER_SECRET_KEY: "${ssm(${self:provider.region}):sgvt-twitter-api-secret-key}",
-        TWITTER_ACCESS_TOKEN_KEY: "${ssm(${self:provider.region}):sgvt-twitter-access-token-key}",
-        TWITTER_ACCESS_TOKEN_SECRET: "${ssm(${self:provider.region}):sgvt-twitter-access-token-secret}",
+        SLACK_BOT_TOKEN: "${ssm:sgvt-slack-bot-token}",
+        SLACK_TEST_CHANNEL: "${ssm:sgvt-slack-test-channel}",
+        SLACK_NOTIFICATION_CHANNEL: "${ssm:sgvt-slack-notification-channel}",
+        TWITTER_CONSUMER_KEY: "${ssm:sgvt-twitter-api-key}",
+        TWITTER_SECRET_KEY: "${ssm:sgvt-twitter-api-secret-key}",
+        TWITTER_ACCESS_TOKEN_KEY: "${ssm:sgvt-twitter-access-token-key}",
+        TWITTER_ACCESS_TOKEN_SECRET: "${ssm:sgvt-twitter-access-token-secret}",
       },
       handler: 'src/lambdas/sns/subscribeNewDatapointTopic.handler',
       events: [
