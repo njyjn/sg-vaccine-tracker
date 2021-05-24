@@ -9,26 +9,31 @@ interface CountsProps {};
 
 interface CountsState {
     count: Count
+    countPartial: Count
+    countTotal: Count
     loadingCount: boolean
     loadingFailed: boolean
 };
 
 export class Counts extends React.PureComponent<CountsProps, CountsState> {
+    defaultCount = {
+        dateAsOf: Date.now.toString(),
+        value: 0,
+        percentage: 0,
+        type: 'fullyVaccinated',
+        dateAsOfPrevious: '-',
+        daysElapsedSincePrevious: 1,
+        valuePrevious: 0,
+        percentagePrevious: 0,
+        percentageChange: 0,
+        percentageChangeAvgPerDay: 0,
+        valueChange: 0,
+        valueChangeAvgPerDay: 0,
+    } as Count;
     state: CountsState = {
-        count: {
-            dateAsOf: Date.now.toString(),
-            value: 0,
-            percentage: 0,
-            type: 'fullyVaccinated',
-            dateAsOfPrevious: '-',
-            daysElapsedSincePrevious: 1,
-            valuePrevious: 0,
-            percentagePrevious: 0,
-            percentageChange: 0,
-            percentageChangeAvgPerDay: 0,
-            valueChange: 0,
-            valueChangeAvgPerDay: 0,
-        } as Count,
+        count: this.defaultCount,
+        countPartial: this.defaultCount,
+        countTotal: this.defaultCount,
         loadingCount: true,
         loadingFailed: false
     };
@@ -71,6 +76,7 @@ export class Counts extends React.PureComponent<CountsProps, CountsState> {
         return (
             <Grid stackable>
                 {this.renderSummary()}
+                {this.renderFirstShotMetrics()}
                 <Divider />
                 {this.renderMetrics()}
                 <Divider />
@@ -79,8 +85,7 @@ export class Counts extends React.PureComponent<CountsProps, CountsState> {
     }
 
     renderSummary() {
-        const value = this.state.count.value
-        const percent = Math.round(value / 5685800 * 10000.0) / 100;
+        const percent = this.state.count.percentage;
         console.log(percent)
         return (
             <Grid.Row>
@@ -101,11 +106,34 @@ export class Counts extends React.PureComponent<CountsProps, CountsState> {
         )
     }
 
+    renderFirstShotMetrics() {
+        const valuePartial = this.state.countPartial.value
+        const percentPartial = this.state.countPartial.percentage;
+        const valueTotal = this.state.countTotal.value
+        const percentTotal = this.state.countTotal.percentage;
+        return (
+            <Grid.Row columns='2'>
+                <Grid.Column textAlign="center">
+                    <Header size="small" inverted>
+                        {percentPartial}% ({valuePartial.toLocaleString()})
+                    </Header>
+                    <p>of Singaporeans are partially vaccinated</p>
+                </Grid.Column>
+                <Grid.Column textAlign="center">
+                    <Header size="small" inverted>
+                        {percentTotal}% ({valueTotal.toLocaleString()})
+                    </Header>
+                    <p>of Singaporeans have received at least one dose</p>
+                </Grid.Column>
+            </Grid.Row>
+        )
+    }
+
     renderMetrics() {
         return (
             <Grid.Row columns='5'>
                 <Grid.Column>
-                    <p>Total vaccinated</p>
+                    <p>Total fully vaccinated</p>
                     <Header size='tiny' inverted>{this.state.count.value}</Header>
                 </Grid.Column>
                 <Grid.Column>
