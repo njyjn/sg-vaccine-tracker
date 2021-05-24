@@ -59,7 +59,6 @@ const serverlessConfiguration: AWS = {
   },
   plugins: [
     'serverless-offline-ssm',
-    'serverless-dotenv-plugin',
     'serverless-webpack',
     'serverless-dynamodb-local',
     'serverless-offline',
