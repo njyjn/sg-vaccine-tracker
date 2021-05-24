@@ -160,9 +160,11 @@ Docker is needed to host a local copy of the Database. Install Docker [here](htt
 
 ##### Run API server offline
 
+Within the `api` root directory:
+
 If you haven't done so, clone the `.env.sample` file and rename it to `.env.local`. These variables are needed so that the SSM plugin can mock them for offline use.
 
-Within the `api` root directory, run the following
+Run the following
 
 `./scripts/run_offline.sh`
 
