@@ -180,6 +180,8 @@ A successful offline run results in a `http://localhost:8001` page getting data 
 
 Unit tests are only currently available for the API. Add unit tests to the `__tests__` directory and run using `npm test`.
 
+Place any mock fixtures into `__mock__`.
+
 ### Making Pull Requests
 
 Please make all pull requests to `njyjn/sg-vaccine-tracker` against the `staging` branch.
