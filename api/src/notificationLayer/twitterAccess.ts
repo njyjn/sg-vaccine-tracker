@@ -7,7 +7,6 @@ const access_token_secret = process.env.TWITTER_ACCESS_TOKEN_SECRET;
 
 export async function postToTwitter(text: string): Promise<void> {
     try {
-        const uriEncodedText = encodeURI(text);
         const twitter = new Twitter({
             consumer_key: consumer_key,
             consumer_secret: consumer_secret,
@@ -17,7 +16,7 @@ export async function postToTwitter(text: string): Promise<void> {
         const tweet = await twitter.post(
             'statuses/update',
             {
-                status: uriEncodedText
+                status: text
             }
         );
         console.log(`Tweeted ${text} as ${tweet.id_str}`);
