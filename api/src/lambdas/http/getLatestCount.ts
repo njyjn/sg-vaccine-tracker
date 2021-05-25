@@ -10,8 +10,8 @@ export const handler = middy(async (event: APIGatewayProxyEvent): Promise<APIGat
     let response;
     try {
         const count = await getLatestCount('fullyVaccinated');
-        const countPartial = await getLatestCount('partial');
-        const countTotal = await getLatestCount('total');
+        const countPartial = await getLatestCount('partiallyVaccinated');
+        const countTotal = await getLatestCount('totalVaccinated');
         response = {
             statusCode: 200,
             body: JSON.stringify({
