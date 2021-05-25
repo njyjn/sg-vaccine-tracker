@@ -6,6 +6,10 @@ const awsRegion = process.env.AWS_REGION;
 const awsAccountId = process.env.AWS_ACCOUNT_ID;
 
 export async function publishToTopic(topicName: string, channelName: string, message: any): Promise<void> {
+    if (process.env.JEST_WORKER_ID) {
+        console.log('Skipping publish to SNS in test context');
+        return
+    }
     try {
         const snsParams = {
             Message: JSON.stringify({
