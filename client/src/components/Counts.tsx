@@ -81,9 +81,9 @@ export class Counts extends React.PureComponent<CountsProps, CountsState> {
         return (
             <Grid stackable>
                 {this.renderSummary()}
-                {this.renderFirstShotMetrics()}
-                <Divider />
                 {this.renderMetrics()}
+                <Divider />
+                {this.renderFirstShotMetrics()}
                 <Divider />
             </Grid>
         )
