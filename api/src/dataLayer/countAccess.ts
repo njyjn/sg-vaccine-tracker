@@ -54,7 +54,7 @@ export class CountAccess {
         const result = await this.docClient.query({
             TableName: this.countsTable,
             Limit: 1,
-            ScanIndexForward: true,
+            ScanIndexForward: false,
             KeyConditionExpression: '#type = :type',
             ExpressionAttributeNames: {
                 '#type': 'type'
