@@ -14,3 +14,8 @@ export interface Count {
     valueChangeAvgPerDay?: number,
     percentChangeDelta?: number,
 };
+
+export interface CountKey {
+    dateAsOf: string,
+    type: string,
+}

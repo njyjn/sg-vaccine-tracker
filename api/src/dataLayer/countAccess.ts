@@ -1,5 +1,5 @@
 import { DocumentClient } from 'aws-sdk/clients/dynamodb';
-import { Count } from 'src/models/Count';
+import { Count, CountKey } from 'src/models/Count';
 
 export class CountAccess {
     constructor(
@@ -7,20 +7,41 @@ export class CountAccess {
         private readonly countsTable = process.env.COUNTS_TABLE,
     ) {}
 
-    async getAllCounts(limit?: number, nextKey?: string): Promise<[Count[], DocumentClient.Key]> {
-        console.log('Getting all counts');
+    async getAllCounts(type?: string, limit?: number, nextKey?: string): Promise<[Count[], DocumentClient.Key]> {
+        console.log(`Getting all counts for ${type}`);
 
         let exclusiveStartKey: DocumentClient.Key;
 
         if (nextKey) {
-            exclusiveStartKey = { id: nextKey };
+            let [ dateAsOf, type ] = nextKey.split(',');
+            exclusiveStartKey = {
+                dateAsOf: dateAsOf,
+                type: type
+            } as CountKey;
         }
 
-        const result = await this.docClient.scan({
-            TableName: this.countsTable,
-            Limit: limit,
-            ExclusiveStartKey: exclusiveStartKey,
-        }).promise();
+        let result;
+        if (type) {
+            result = await this.docClient.query({
+                TableName: this.countsTable,
+                Limit: limit,
+                ExclusiveStartKey: exclusiveStartKey,
+                ScanIndexForward: true,
+                KeyConditionExpression: '#type = :type',
+                ExpressionAttributeNames: {
+                    '#type': 'type'
+                },
+                ExpressionAttributeValues: {
+                    ':type': type
+                },
+            }).promise();
+        } else {
+            result = await this.docClient.scan({
+                TableName: this.countsTable,
+                Limit: limit,
+                ExclusiveStartKey: exclusiveStartKey,
+            }).promise();
+        }
     
         const counts = result.Items as Count[];
         const lastEvaluatedKey = result.LastEvaluatedKey;
