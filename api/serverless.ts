@@ -254,13 +254,13 @@ const serverlessConfiguration: AWS = {
           ],
           KeySchema: [
             {
-              AttributeName: 'dateAsOf',
+              AttributeName: 'type',
               KeyType: 'HASH',
             },
             {
-              AttributeName: 'type',
+              AttributeName: 'dateAsOf',
               KeyType: 'RANGE',
-            }
+            },
           ],
           BillingMode: 'PAY_PER_REQUEST',
           TableName: "${self:provider.environment.COUNTS_TABLE}"
