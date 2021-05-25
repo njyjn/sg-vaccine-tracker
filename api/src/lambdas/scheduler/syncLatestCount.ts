@@ -1,9 +1,5 @@
 import { APIGatewayProxyEvent, APIGatewayProxyHandler, APIGatewayProxyResult } from "aws-lambda";
-import { calculateHistoricals, getHtmlContent, createOrUpdateCount, checkCountExists, getLatestCount } from 'src/logic/count';
-import { Count } from "src/models/Count";
-import { publishToTopic } from 'src/notificationLayer/notificationAccess'
-
-const topicName = process.env.NEW_DATAPOINT_TOPIC_NAME;
+import { processLatestCount, writeLatestCount } from "src/logic/sync";
 
 export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
     console.log('Processing event: ', event);
@@ -14,34 +10,25 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
         if (event.queryStringParameters) {
             sourceUrl = event.queryStringParameters.sourceUrl
         }
-        const count = await getHtmlContent(sourceUrl);
-        const alreadyExists = await checkCountExists(count);
-        let result: Count;
-        if (!alreadyExists) {
-            const lastCount = await getLatestCount();
-            const countWithHistoricals = await calculateHistoricals(count, lastCount);
-            result = await createOrUpdateCount(countWithHistoricals);
-            await publishToTopic(topicName, 'NewDatapoint', result);
-            response = {
-                statusCode: 201,
-                headers: {
-                    'Access-Control-Allow-Origin': '*',
-                },
-                body: JSON.stringify({
-                    count: result,
-                })
-            };
-        } else {
-            response = {
-                statusCode: 200,
-                headers: {
-                    'Access-Control-Allow-Origin': '*',
-                },
-                body: JSON.stringify({
-                    count: count,
-                })
-            };
+        const syncResponse = await processLatestCount(sourceUrl);
+        if (syncResponse[0]) {
+            for (const countWithHistoricals of syncResponse[1]) {
+                try {
+                    await writeLatestCount(countWithHistoricals);
+                } catch (e) {
+                    console.log(`Failed to write latest count ${countWithHistoricals}`, e);
+                }
+            }
         }
+        response = {
+            statusCode: syncResponse[0] ? 201 : 200,
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+            },
+            body: JSON.stringify({
+                counts: syncResponse[1]
+            })
+        };
     } catch (e) {
         console.log('Failed to process latest count: ', e);
         response = {
