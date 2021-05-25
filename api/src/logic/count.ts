@@ -8,36 +8,31 @@ const populationTotal = process.env.POPULATION_TOTAL || '5685800';
 
 const countAccess = new CountAccess();
 
-export async function getAllCounts(limit?: number, nextKey?: string): Promise<[Count[], any]> {
+const countTypeKeymap: Map<string, string> = new Map([
+    ['partiallyVaccinated', 'Received at least First Dose'],
+    ['fullyVaccinated', 'Completed Full Vaccination Regimen'],
+    ['totalVaccinated', 'Total Doses Administered'],
+]);
+
+export async function getAllCounts(type?: string, limit?: number, nextKey?: string): Promise<[Count[], any]> {
     try {
-        return await countAccess.getAllCounts(limit, nextKey);
+        return await countAccess.getAllCounts(type, limit, nextKey);
     } catch (e) {
         console.log('Failed to get all counts:', e);
     }
 }
 
-export async function getLatestCount(type?: string): Promise<Count> {
-    // TODO: Implement type filtered in countAccess layer
-    //@ts-ignore
-    let countType = type || 'fullyVaccinated';
+export async function getLatestCount(type: string): Promise<Count> {
     try {
-        const counts = await countAccess.getAllCounts();
-        const sorted = counts[0].sort((a,b) => {
-            const dateA = new Date(a.dateAsOf);
-            const dateB = new Date(b.dateAsOf);
-            if (dateA < dateB) {
-                return 1;
-            } else {
-                return -1;
-            }
-        });
-        return sorted[0];
+        const count = await countAccess.getLatestCount(type);
+        return count;
     } catch (e) {
         console.log('Error getting latest count:', e);
     }
 };
 
-export async function getHtmlContent(sourceUrl?: string): Promise<Count> {
+export async function getHtmlContent(sourceUrl?: string): Promise<Count[]> {
+    let allCounts: Count[] = [];
     try {
         const url = sourceUrl || statUrl;
         const dom = await axios.get(url);
@@ -46,22 +41,30 @@ export async function getHtmlContent(sourceUrl?: string): Promise<Count> {
             return node.innerText.startsWith('Vaccination Data (as of ');
         }).innerText;
         console.log('Found header to be', header);
-        const td = document.querySelectorAll('td')
+        const td = document.querySelectorAll('td');
+        // TODO: Implement for-each loop here to iterate through the following keywords
+        // Hint: Use the .keys function on countTypeKeymap to get a list of keywords 
+        // TODO: Replace the following with the value of the key, using .get()
+        const countType = 'fullyVaccinated';
         const data = td[
             td.findIndex(node => {
+                // TODO: Replace hardcoded keyword search below with variable from iteration
+                // Hint: Use the .get() function
                 return node.innerText.includes('Completed Full Vaccination Regimen');
             }) + 1
         ].innerText.trim().replace(/,/g, '');
-        console.log('Found data to be', data);
+        console.log(`Found data for ${countType} to be`, data);
         const dateAsOf = new Date(Date.parse(parseDateFromHeader(header))).toISOString();
-        const fullyVaccinatedCount = parseInt(data);
+        const countValue = parseInt(data);
         const count = {
             dateAsOf: dateAsOf,
-            type: 'fullyVaccinated',
-            value: fullyVaccinatedCount,
+            type: countType,
+            value: countValue,
         } as Count;
         console.log('Count object', count, 'will be synced');
-        return count;
+        allCounts.push(count)
+        // TODO: The for-each loop should end here, thereby returning the final list of all counts
+        return allCounts;
     } catch (e) {
         console.log('Error getting HTML content: ', e);
         throw new Error('Error getting HTML content from URL');
