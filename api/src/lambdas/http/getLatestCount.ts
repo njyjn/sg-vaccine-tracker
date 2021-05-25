@@ -9,11 +9,15 @@ export const handler = middy(async (event: APIGatewayProxyEvent): Promise<APIGat
 
     let response;
     try {
-        const count = await getLatestCount();
+        const count = await getLatestCount('fullyVaccinated');
+        const countPartial = await getLatestCount('partial');
+        const countTotal = await getLatestCount('total');
         response = {
             statusCode: 200,
             body: JSON.stringify({
-                ...count
+                count,
+                countPartial,
+                countTotal,
             })
         };
     } catch (e) {

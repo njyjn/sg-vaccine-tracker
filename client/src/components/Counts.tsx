@@ -40,9 +40,14 @@ export class Counts extends React.PureComponent<CountsProps, CountsState> {
     
     async componentDidMount() {
         try {
-            const count = await getLatestCount();
+            let { count, countPartial, countTotal } = await getLatestCount();
+            if (!count || !countPartial || !countTotal) {
+                throw new Error();
+            }
             this.setState({
                 count: count,
+                countPartial: countPartial,
+                countTotal: countTotal,
                 loadingCount: false
             })
         } catch (e) {

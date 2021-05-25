@@ -14,3 +14,9 @@ export interface Count {
     valueChangeAvgPerDay?: number,
     percentChangeDelta?: number,
 }
+
+export interface CountCollection {
+    count: Count,
+    countPartial: Count,
+    countTotal: Count,
+}

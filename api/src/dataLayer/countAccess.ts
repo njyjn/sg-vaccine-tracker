@@ -48,6 +48,25 @@ export class CountAccess {
         return [counts, lastEvaluatedKey] ;
     };
 
+    async getLatestCount(type: string): Promise<Count> {
+        console.log(`Getting counts for ${type}`);
+
+        const result = await this.docClient.query({
+            TableName: this.countsTable,
+            Limit: 1,
+            ScanIndexForward: true,
+            KeyConditionExpression: '#type = :type',
+            ExpressionAttributeNames: {
+                '#type': 'type'
+            },
+            ExpressionAttributeValues: {
+                ':type': type
+            },
+        }).promise();
+
+        return result.Items[0] as Count;
+    };
+
     async createOrUpdateCount(count: Count): Promise<Count> {
         console.log('Creating or updating a count data point with data', count);
 
