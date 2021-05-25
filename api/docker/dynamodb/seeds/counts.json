@@ -46,5 +46,21 @@
         "valueChange": 313900,
         "valueChangeAvgPerDay": 26158,
         "percentChangeDelta": 0.06
+    },
+    {
+        "dateAsOf": "2021-05-10T00:00:00.000Z",
+        "type": "fullyVaccinated",
+        "value": 1284646,
+        "totalPopulation": 5685800,
+        "percentage": 22.59,
+        "dateAsOfPrevious": "2021-04-18T00:00:00.000Z",
+        "daysElapsedSincePrevious": 22,
+        "valuePrevious": 1284646,
+        "percentagePrevious": 14.95,
+        "percentageChange": 7.64,
+        "percentageChangeAvgPerDay": 0.35,
+        "valueChange": 434882,
+        "valueChangeAvgPerDay": 19767,
+        "percentChangeDelta": -0.11
     }
 ]
