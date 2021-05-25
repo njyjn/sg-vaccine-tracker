@@ -135,6 +135,7 @@ export class Counts extends React.PureComponent<CountsProps, CountsState> {
     }
 
     renderMetrics() {
+        // TODO: Convert all numerical values into comma separated strings if applicable
         return (
             <Grid.Row columns='5'>
                 <Grid.Column>
