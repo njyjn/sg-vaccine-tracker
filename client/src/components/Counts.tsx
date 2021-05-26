@@ -106,7 +106,7 @@ export class Counts extends React.PureComponent<CountsProps, CountsState> {
             <Grid.Row columns='5'>
                 <Grid.Column>
                     <p>Total vaccinated</p>
-                    <Header size='tiny' inverted>{this.state.count.value}</Header>
+                    <Header size='tiny' inverted>{this.state.count.value.toLocaleString('en-SG')}</Header>
                 </Grid.Column>
                 <Grid.Column>
                     <p>Previous update</p>
