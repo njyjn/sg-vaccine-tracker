@@ -1,4 +1,4 @@
-import { getLatestCounts } from '../../../src/logic/count';
+import { getLatestCount } from '../../../src/logic/count';
 import fs from 'fs';
 import path from 'path';
 
@@ -8,9 +8,9 @@ const countSeedData = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../../
 
 describe('fullyVaccinated', () => {
     test('returns latest fullyVaccinated', async () => {
-        await expect(getLatestCounts('fullyVaccinated')).resolves.toEqual([
-            countSeedData[0],
-            undefined
-        ]);
+        const countSeedDataRelevant = countSeedData.filter(entry => entry.type === 'fullyVaccinated');
+        await expect(getLatestCount('fullyVaccinated')).resolves.toEqual(
+            countSeedDataRelevant[countSeedDataRelevant.length - 1]
+        );
     });
 });

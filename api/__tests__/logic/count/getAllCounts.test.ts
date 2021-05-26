@@ -5,72 +5,71 @@ import path from 'path';
 jest.setTimeout(30000);
 
 const countSeedData = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../../../docker/dynamodb/seeds/counts.json'), 'utf-8'));
+const countSeedDataRelevant = countSeedData.filter(entry => entry.type === 'fullyVaccinated');
 
 describe('with type, no limit, key', () => {
     test('returns all fullyVaccinated', async () => {
         await expect(getAllCounts('fullyVaccinated')).resolves.toEqual([
-            countSeedData.filter(entry => entry.type === 'fullyVaccinated'),
+            countSeedDataRelevant,
             undefined
         ]);
     });
 });
 
 describe('no limit, key, or type', () => {
-    test('returns all records', async () => {
-        await expect(getAllCounts()).resolves.toEqual([
-            countSeedData,
-            undefined
-        ]);
+    test('returns same length', async () => {
+        const result = await getAllCounts();
+        expect(result[0].length).toEqual(countSeedData.length);
     });
 });
 
-describe('with limit, type no key', () => {
+describe('with limit, type, no key', () => {
     test('limit 1 key to ownself for fullyVaccinated', async () => {
         await expect(getAllCounts('fullyVaccinated', 1)).resolves.toEqual([
-            [countSeedData.filter(entry => entry.type === 'fullyVaccinated')[0]],
+            [countSeedDataRelevant[0]],
             {
-                dateAsOf: countSeedData[0]['dateAsOf'],
-                type: countSeedData[0]['type']
+                dateAsOf: countSeedDataRelevant[0]['dateAsOf'],
+                type: countSeedDataRelevant[0]['type']
             }
         ]);
     });
     test('limit 2 key to last element', async () => {
         await expect(getAllCounts(undefined, 2)).resolves.toEqual([
             [
-                countSeedData[0],
-                countSeedData[1]
+                countSeedDataRelevant[0],
+                countSeedDataRelevant[1]
             ],
             {
-                dateAsOf: countSeedData[1]['dateAsOf'],
-                type: countSeedData[1]['type']
+                dateAsOf: countSeedDataRelevant[1]['dateAsOf'],
+                type: countSeedDataRelevant[1]['type']
             }
         ]);
     });
 });
 
-describe('with limit, key, no type', () => {
-    test('limit 1 key to ownself with offset 0', async () => {
+describe('with limit, key, type', () => {
+    test('limit 1 key to ownself with offset 0 for fullyVaccinated', async () => {
         await expect(
-            getAllCounts(undefined, 1, `${countSeedData[0]['dateAsOf']},${countSeedData[0]['type']}`)
+            getAllCounts(undefined, 1, `${countSeedDataRelevant[0]['dateAsOf']},${countSeedDataRelevant[0]['type']}`)
         ).resolves.toEqual([
-            [countSeedData[1]],
+            [countSeedDataRelevant[1]],
             {
-                dateAsOf: countSeedData[1]['dateAsOf'],
-                type: countSeedData[1]['type']
+                dateAsOf: countSeedDataRelevant[1]['dateAsOf'],
+                type: countSeedDataRelevant[1]['type']
             }
         ]);
     });
     test('limit 2 key to last element with offset 1', async () => {
         await expect(
-            getAllCounts(undefined, 2, `${countSeedData[0]['dateAsOf']},${countSeedData[0]['type']}`)
+            getAllCounts(undefined, 2, `${countSeedDataRelevant[0]['dateAsOf']},${countSeedDataRelevant[0]['type']}`)
         ).resolves.toEqual([
             [
-                countSeedData[1],
-                countSeedData[2]
+                countSeedDataRelevant[1],
+                countSeedDataRelevant[2]
             ],
             {
-                dateAsOf: countSeedData[2]['dateAsOf'],
-                type: countSeedData[2]['type']
+                dateAsOf: countSeedDataRelevant[2]['dateAsOf'],
+                type: countSeedDataRelevant[2]['type']
             }
         ]);
     });
