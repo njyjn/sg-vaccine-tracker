@@ -18,19 +18,19 @@ describe('latest data 2021-05-10', () => {
             [
                 {
                     dateAsOf: '2021-05-17T00:00:00.000Z',
-                    dateAsOfPrevious: '2021-04-03T00:00:00.000Z',
-                    daysElapsedSincePrevious: 44,
-                    percentChangeDelta: 0.27,
+                    dateAsOfPrevious: '2021-05-10T00:00:00.000Z',
+                    daysElapsedSincePrevious: 7,
+                    percentChangeDelta: 0.04,
                     percentage: 25.34,
-                    percentageChange: 17.11,
+                    percentageChange: 2.75,
                     percentageChangeAvgPerDay: 0.39,
-                    percentagePrevious: 8.23,
+                    percentagePrevious: 22.59,
                     totalPopulation: 5685800,
                     type: 'fullyVaccinated',
                     value: 1440545,
-                    valueChange: 972545,
-                    valueChangeAvgPerDay: 22103,
-                    valuePrevious: 468000,
+                    valueChange: 155899,
+                    valueChangeAvgPerDay: 22271,
+                    valuePrevious: 1284646,
                 }
             ] as Count[]
         ]);

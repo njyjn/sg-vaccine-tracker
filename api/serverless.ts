@@ -46,6 +46,12 @@ const serverlessConfiguration: AWS = {
               sources: [
                 'docker/dynamodb/seeds/counts.json'
               ]
+            },
+            {
+              table: "${self:provider.environment.COUNTS_TABLE}V2",
+              sources: [
+                'docker/dynamodb/seeds/counts.json'
+              ]
             }
           ]
         }
@@ -254,6 +260,33 @@ const serverlessConfiguration: AWS = {
           ],
           KeySchema: [
             {
+              AttributeName: 'dateAsOf',
+              KeyType: 'HASH',
+            },
+            {
+              AttributeName: 'type',
+              KeyType: 'RANGE',
+            },
+          ],
+          BillingMode: 'PAY_PER_REQUEST',
+          TableName: "${self:provider.environment.COUNTS_TABLE}"
+        }
+      },
+      CountsDynamoDBTableV2: {
+        Type: 'AWS::DynamoDB::Table',
+        Properties: {
+          AttributeDefinitions: [
+            {
+              AttributeName: 'dateAsOf',
+              AttributeType: 'S',
+            },
+            {
+              AttributeName: 'type',
+              AttributeType: 'S',
+            },
+          ],
+          KeySchema: [
+            {
               AttributeName: 'type',
               KeyType: 'HASH',
             },
@@ -263,7 +296,7 @@ const serverlessConfiguration: AWS = {
             },
           ],
           BillingMode: 'PAY_PER_REQUEST',
-          TableName: "${self:provider.environment.COUNTS_TABLE}"
+          TableName: "${self:provider.environment.COUNTS_TABLE}V2"
         }
       },
       NewDatapointTopic: {

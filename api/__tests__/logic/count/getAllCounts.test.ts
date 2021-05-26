@@ -9,7 +9,7 @@ const countSeedData = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../../
 describe('with type, no limit, key', () => {
     test('returns all fullyVaccinated', async () => {
         await expect(getAllCounts('fullyVaccinated')).resolves.toEqual([
-            countSeedData,
+            countSeedData.filter(entry => entry.type === 'fullyVaccinated'),
             undefined
         ]);
     });
@@ -24,10 +24,10 @@ describe('no limit, key, or type', () => {
     });
 });
 
-describe('with limit, no key, no type', () => {
-    test('limit 1 key to ownself', async () => {
-        await expect(getAllCounts(undefined, 1)).resolves.toEqual([
-            [countSeedData[0]],
+describe('with limit, type no key', () => {
+    test('limit 1 key to ownself for fullyVaccinated', async () => {
+        await expect(getAllCounts('fullyVaccinated', 1)).resolves.toEqual([
+            [countSeedData.filter(entry => entry.type === 'fullyVaccinated')[0]],
             {
                 dateAsOf: countSeedData[0]['dateAsOf'],
                 type: countSeedData[0]['type']

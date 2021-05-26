@@ -4,7 +4,7 @@ import { Count, CountKey } from 'src/models/Count';
 export class CountAccess {
     constructor(
         private readonly docClient: DocumentClient = createDynamoDbClient(),
-        private readonly countsTable = process.env.COUNTS_TABLE,
+        private readonly countsTable = process.env.COUNTS_TABLE + 'V2',
     ) {}
 
     async getAllCounts(type?: string, limit?: number, nextKey?: string): Promise<[Count[], DocumentClient.Key]> {
