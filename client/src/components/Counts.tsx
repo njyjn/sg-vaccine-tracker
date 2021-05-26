@@ -139,8 +139,13 @@ export class Counts extends React.PureComponent<CountsProps, CountsState> {
         return (
             <Grid.Row columns='5'>
                 <Grid.Column>
+<<<<<<< HEAD
                     <p>Total fully vaccinated</p>
                     <Header size='tiny' inverted>{this.state.count.value}</Header>
+=======
+                    <p>Total vaccinated</p>
+                    <Header size='tiny' inverted>{this.state.count.value.toLocaleString('en-SG')}</Header>
+>>>>>>> dev
                 </Grid.Column>
                 <Grid.Column>
                     <p>Previous update</p>
