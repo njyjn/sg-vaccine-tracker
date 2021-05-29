@@ -32,6 +32,7 @@ const serverlessConfiguration: AWS = {
       ],
       start: {
         image: 'sgvt-dynamodb-local',
+        host: "${env:DYNAMODB_HOST, 'localhost'}",
         port: 8000,
         noStart: true,
         migrate: true,
