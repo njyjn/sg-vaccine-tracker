@@ -1,0 +1,32 @@
+version: '3.8'
+services:
+  dynamodb:
+    command: "-jar DynamoDBLocal.jar -sharedDb -optimizeDbBeforeStartup -dbPath ./data"
+    image: "amazon/dynamodb-local:latest"
+    container_name: sg-vaccine-tracker_dynamodb-local
+    volumes:
+      - "./api/docker/dynamodb:/home/dynamodblocal/data"
+    working_dir: /home/dynamodblocal
+    ports:
+      - "8000:8000"
+    expose:
+      - "8000"
+  api:
+    build: 
+      context: "./api"
+    ports:
+      - "3003:3003"
+    depends_on: 
+      - dynamodb
+    env_file:
+      - "./api/.env"
+    environment:
+      - AWS_PROFILE=serverless
+      - DYNAMODB_HOST=dynamodb
+    volumes:
+      - $HOME/.aws/credentials:/root/.aws/credentials:ro
+  client:
+    build:
+      context: "./client"
+    ports:
+      - "8081:8081"
