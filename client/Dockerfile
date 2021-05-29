@@ -1,8 +1,11 @@
 FROM node:12
 
-ADD . /home/
-WORKDIR /home
+WORKDIR /src
 
-RUN npm install
+ADD package.json /src
+
+RUN npm install --silent
+
+ADD . /src
 
 CMD ["npm", "start"]
