@@ -6,13 +6,13 @@ A barebones, single-page client built in React. It has a component that reaches 
 
 Assuming Node.js (12.x) and NPM are installed, run `npm install`.
 
-This project is compatible with AWS Elastic Beanstalk and Heroku. 
+### Running Offline
 
-### Deploying with Elastic Beanstalk
+For offline testing, run `npm start`. Before this command is run, [ensure the backend API has been setup and is running](../api/README.md).
 
-Use `eb init` and `eb create`, then `npm run build`
+Alternatively, to use Docker to host all of the infrastructure, refer to the [Contribution Guide](../CONTRIBUTING.md).
 
-Finally, `eb deploy --staged`. Don't forget to set your env variables as per the `.env.sample` file. Note the `PORT` should be based on whatever you chose as your proxy server in EB. For nginx, the default is `8081`
+This project is compatible with Heroku.
 
 ### Deploying with Heroku
 

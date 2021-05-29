@@ -43,7 +43,19 @@ Assuming Node.js (12.x) and NPM are installed, run `npm install`.
 
 To deploy, run `sls deploy -v --aws-profile <AWS-PROFILE>`.
 
-For offline testing, run `sls offline start --stage local`. Before this command is run, start the official DynamoDB docker with `docker-compose up`. You could also install the serverless [dynamodb local plugin](https://www.npmjs.com/package/serverless-dynamodb-local) but it did not work for me as I use an M1 Mac that gave me issues.
+AWS credentials are needed to sign certain requests. Download the [AWS CLI](https://aws.amazon.com/cli/), request credentials from the CODEOWNER (or create your own), and setup your credentials as such
+
+```bash
+$ aws configure
+AWS Access Key ID [None]: AKIAIOSFODNN7EXAMPLE
+AWS Secret Access Key [None]: wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+Default region name [None]:
+Default output format [None]: json
+```
+
+For offline testing, run `sls offline start --stage local`. Before this command is run, start the official DynamoDB docker with `docker-compose up`. A script is provided for this, run `./scripts/run_offline.sh`.
+
+Alternatively, to use Docker to host all of the infrastructure, refer to the [Contribution Guide](../CONTRIBUTING.md).
 
 Then, use the client or query the API using Postman. There should be a single data point seeded.
 
@@ -54,12 +66,13 @@ Unit tests are now enabled for this component via Jest. To run, use `npm run tes
 Offline testing with SNS is now supported via the serverless-offline-ssm plugin. To use, create a `.env` file for local use with the following parameters
 
 ```env
-sgvt-slack-bot-token=''
-sgvt-slack-test-channel=''
-sgvt-slack-notification-channel=''
-sgvt-twitter-api-key=''
-sgvt-twitter-api-secret-key=''
-sgvt-twitter-bearer-token=''
+sgvt-slack-bot-token=123
+sgvt-slack-test-channel=123
+sgvt-slack-notification-channel=123
+sgvt-twitter-api-key=123
+sgvt-twitter-api-secret-key=123
+sgvt-twitter-access-token-key=123
+sgvt-twitter-access-token-secret=123
 ```
 
 - SLACK_BOT_TOKEN: The token provided by Slack
