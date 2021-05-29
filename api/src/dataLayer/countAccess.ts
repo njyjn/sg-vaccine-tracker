@@ -1,6 +1,8 @@
 import { DocumentClient } from 'aws-sdk/clients/dynamodb';
 import { Count } from 'src/models/Count';
 
+const dbHost = process.env.DYNAMODB_HOST || 'localhost'
+
 export class CountAccess {
     constructor(
         private readonly docClient: DocumentClient = createDynamoDbClient(),
@@ -72,7 +74,7 @@ function createDynamoDbClient() {
         console.log('Creating a local DynamoDB instance...');
         return new DocumentClient({
             region: 'localhost',
-            endpoint: 'http://localhost:8000',
+            endpoint: `http://${dbHost}:8000`,
         });
     }
 
