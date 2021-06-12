@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { Button, Divider, Dropdown, DropdownProps, Form, Grid, Menu, TextArea } from 'semantic-ui-react';
 import { apiEndpoint } from '../config';
 import { withAuth0, WithAuth0Props } from '@auth0/auth0-react';
-import { syncLatestCount } from '../api/counts-api';
+import { getAllCounts, syncLatestCount } from '../api/counts-api';
 
 interface AppState {
   stage: any,
@@ -28,6 +28,22 @@ class Admin extends Component<WithAuth0Props> {
   syncLatestCount = async () => {
     try {
       await syncLatestCount(await this.loadAuthToken());
+      alert('Success');
+    } catch(error) {
+      alert(error);
+    }
+  }
+
+  downloadAllCounts = async () => {
+    try {
+      const counts = JSON.stringify(await getAllCounts(await this.loadAuthToken()));
+      const countsBlob = new Blob([counts], {type: 'application/json'});
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(countsBlob);
+      link.download = 'counts.json';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
     } catch(error) {
       alert(error);
     }
@@ -80,9 +96,19 @@ class Admin extends Component<WithAuth0Props> {
             <Divider />
             <Grid.Row>
               <Button
+                icon='download'
+                label='Download data as JSON'
+                color="blue"
+                onClick={this.downloadAllCounts}
+              />
+            </Grid.Row>
+            <Grid.Row>
+              <Button
+                icon='sync'
+                label='Sync latest count'
                 color="red"
                 onClick={this.syncLatestCount}
-              >Sync latest count</Button>
+              />
             </Grid.Row>
             <Grid.Row>
               <p>Last synced: {new Date().toUTCString()}</p>
