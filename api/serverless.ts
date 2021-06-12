@@ -1,5 +1,5 @@
 import type { AWS } from '@serverless/typescript';
-import { slsCorsOrigins } from 'src/config';
+import { slsCorsOrigins, jwksUrl } from 'src/config';
 
 const serverlessConfiguration: AWS = {
   service: 'sg-vaccine-tracker',
@@ -163,6 +163,26 @@ const serverlessConfiguration: AWS = {
   },
   // import the function via paths
   functions: {
+    AuthWithCert: {
+      environment: {
+        JWKS_URL: jwksUrl
+      },
+      handler: 'src/lambdas/auth/customAuthWithCert.handler'
+    },
+    HealthCheck: {
+      handler: 'src/lambdas/http/healthCheck.handler',
+      events: [
+        {
+          http: {
+            method: 'get',
+            path: '/',
+            cors: {
+              Ref: "${self:custom.cors}"
+            }
+          }
+        }
+      ]
+    },
     GetLatestCount: {
       handler: 'src/lambdas/http/getLatestCount.handler',
       events: [
@@ -194,14 +214,16 @@ const serverlessConfiguration: AWS = {
     SyncLatestCount: {
       handler: 'src/lambdas/scheduler/syncLatestCount.handler',
       events: [
-        // {
-        //   http: {
-        //     method: 'post',
-        //     path: 'counts',
-        //     cors: true,
-        //     private: true,
-        //   }
-        // },
+        {
+          http: {
+            method: 'post',
+            path: 'counts/sync',
+            cors: true,
+            authorizer: {
+              name: 'AuthWithCert'
+            },
+          }
+        },
         {
           schedule: {
             rate: 'cron(0 12 * * ? *)',
