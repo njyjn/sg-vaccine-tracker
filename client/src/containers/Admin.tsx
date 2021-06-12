@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { Button, Divider, Dropdown, DropdownProps, Form, Grid, Menu, TextArea } from 'semantic-ui-react';
 import { apiEndpoint } from '../config';
 import { withAuth0, WithAuth0Props } from '@auth0/auth0-react';
+import { syncLatestCount } from '../api/counts-api';
 
 interface AppState {
   stage: any,
@@ -19,6 +20,18 @@ class Admin extends Component<WithAuth0Props> {
     { key: 'dev', text: 'dev', value: 'dev'},
     { key: 'prod', text: 'prod', value: 'prod'}
   ]
+
+  loadAuthToken = async () => {
+    return await this.props.auth0.getAccessTokenSilently();
+  }
+
+  syncLatestCount = async () => {
+    try {
+      await syncLatestCount(await this.loadAuthToken());
+    } catch(error) {
+      alert(error);
+    }
+  }
 
   onStageSelect = (event: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => {
     this.setState({
@@ -66,7 +79,10 @@ class Admin extends Component<WithAuth0Props> {
             </Grid.Row>
             <Divider />
             <Grid.Row>
-              <Button color="red">Sync latest count</Button>
+              <Button
+                color="red"
+                onClick={this.syncLatestCount}
+              >Sync latest count</Button>
             </Grid.Row>
             <Grid.Row>
               <p>Last synced: {new Date().toUTCString()}</p>
