@@ -3,7 +3,7 @@ import Admin from '../containers/Admin';
 import App from '../containers/App';
 import { createBrowserHistory } from 'history'
 import { Auth0Provider, withAuthenticationRequired } from '@auth0/auth0-react';
-import { authConfig } from '../config';
+import { authConfig, apiEndpoint } from '../config';
 
 const history = createBrowserHistory();
 
@@ -23,6 +23,7 @@ export default function AppRouter() {
       clientId={authConfig.clientId}
       redirectUri={authConfig.callbackUrl}
       onRedirectCallback={onRedirectCallback}
+      audience={apiEndpoint}
     >
     <Router history={history}>
       <Switch>
