@@ -206,7 +206,9 @@ const serverlessConfiguration: AWS = {
             method: 'get',
             path: 'counts',
             cors: true,
-            private: true,
+            authorizer: {
+              name: 'AuthWithCert'
+            },
           }
         }
       ]
