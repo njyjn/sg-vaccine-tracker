@@ -112,15 +112,33 @@ class Admin extends Component<WithAuth0Props> {
             <Grid.Row>
               <Button
                 icon='download'
-                label='Download data as JSON'
-                color="blue"
+                label='Download data (JSON)'
+                color="black"
                 onClick={this.downloadAllCounts}
               />
             </Grid.Row>
             <Grid.Row>
               <Button
+                disabled
+                icon='upload'
+                label='Upload and overwrite all data (JSON)'
+                color="red"
+                onClick={this.downloadAllCounts}
+              />
+            </Grid.Row>
+            <Grid.Row>
+              <Button
+                disabled
+                icon='calculator'
+                label='Recalculate all historicals'
+                color="red"
+                onClick={this.syncLatestCount}
+              />
+            </Grid.Row>
+            <Grid.Row>
+              <Button
                 icon='sync'
-                label='Sync latest count'
+                label='Obtain latest data'
                 color="red"
                 onClick={this.syncLatestCount}
               />
@@ -131,14 +149,37 @@ class Admin extends Component<WithAuth0Props> {
             <Divider />
             <Grid.Row>
               <Grid.Column textAlign='center'>
-                <Form size='large' inverted>
+                <Form
+                  onSubmit={this.upsertCounts}
+                  size='large'
+                  inverted>
                   <Form.Field
                     control={TextArea}
                     label="Upsert Count"
-                    placeholder="Input JSON"
+                    name='upsertData'
+                    value={this.state.upsertData}
+                    onChange={this.handleChange}
+                    placeholder='[{
+                      "totalPopulation": 5685800,
+                      "dateAsOf": "2021-04-06T00:00:00.000Z",
+                      "percentagePrevious": 8.23,
+                      "percentageChangeAvgPerDay": 0.4,
+                      "valueChangeAvgPerDay": 22621,
+                      "valuePrevious": 468000,
+                      "percentageChange": 1.19,
+                      "type": "fullyVaccinated",
+                      "dateAsOfPrevious": "2021-04-03T00:00:00.000Z",
+                      "valueChange": 67864,
+                      "percentage": 9.42,
+                      "percentChangeDelta": 0.28,
+                      "daysElapsedSincePrevious": 3,
+                      "value": 535864}]'
                   >
                   </Form.Field>
-                  <Button color="red" type="submit">Submit</Button>
+                  <Form.Button
+                    color="red"
+                    type="submit"
+                  >Submit</Form.Button>
                 </Form>
               </Grid.Column>
             </Grid.Row>
