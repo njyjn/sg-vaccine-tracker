@@ -12,11 +12,12 @@ interface AppState {
 
 class Admin extends Component<WithAuth0Props> {
   state: AppState = {
-    stage: 'dev',
+    stage: apiEndpoint.split('/').reverse()[0],
     stageUrl: apiEndpoint
   }
 
   stageOptions = [
+    { key: 'local', text: 'local', value: 'local'},
     { key: 'dev', text: 'dev', value: 'dev'},
     { key: 'prod', text: 'prod', value: 'prod'}
   ]
@@ -79,11 +80,12 @@ class Admin extends Component<WithAuth0Props> {
           <Grid columns="1" centered divided>
             <Grid.Row>
               <Dropdown
+                disabled
                 inverted
                 button
                 floating
                 options={this.stageOptions}
-                defaultValue='dev'
+                defaultValue={this.state.stage}
                 onChange={this.onStageSelect}
               ></Dropdown>
             </Grid.Row>
