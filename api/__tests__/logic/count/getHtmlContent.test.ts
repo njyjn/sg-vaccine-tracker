@@ -9,15 +9,18 @@ jest.mock('axios');
 const mockHtmlContent = fs.readFileSync(path.resolve(__dirname, '../../../__mocks__/vaccination.html'), 'utf-8');
 const mockedAxios = axios as jest.Mocked<typeof axios>;
 
+// Here the HTML mockfile is designed to differ from the latest seed data by only a day
+// Since the seed data does not change much it is feasible
+// Latest seed as of 2021-06-07
 describe('fully vaccinated count', () => {
-    test('gets value of 1440545 on ts of 5/27/21', async () => {
+    test('gets value of 1888253 on ts of 6/08/21', async () => {
         mockedAxios.get.mockResolvedValueOnce({ data: mockHtmlContent });
         await expect(
             getHtmlContent()
         ).resolves.toEqual([{
-            dateAsOf: '2021-05-17T00:00:00.000Z',
+            dateAsOf: '2021-06-08T00:00:00.000Z',
             type: 'fullyVaccinated',
-            value: 1440545
+            value: 1888253
         }] as Count[])
     })
 })

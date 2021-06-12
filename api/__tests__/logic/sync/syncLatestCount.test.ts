@@ -10,27 +10,30 @@ jest.setTimeout(30000);
 const mockHtmlContent = fs.readFileSync(path.resolve(__dirname, '../../../__mocks__/vaccination.html'), 'utf-8');
 const mockedAxios = axios as jest.Mocked<typeof axios>;
 
-describe('latest data 2021-05-10', () => {
-    test('returns data 2021-05-17', async () => {
+// Here the HTML mockfile is designed to differ from the latest seed data by only a day
+// Since the seed data does not change much it is feasible
+// Latest seed as of 2021-06-07
+describe('latest data 2021-06-07', () => {
+    test('returns data 2021-06-08', async () => {
         mockedAxios.get.mockResolvedValueOnce({ data: mockHtmlContent });
         await expect(processLatestCount()).resolves.toEqual([
             true,
             [
                 {
-                    dateAsOf: '2021-05-17T00:00:00.000Z',
-                    dateAsOfPrevious: '2021-05-10T00:00:00.000Z',
-                    daysElapsedSincePrevious: 7,
-                    percentChangeDelta: 0.04,
-                    percentage: 25.34,
-                    percentageChange: 2.75,
-                    percentageChangeAvgPerDay: 0.39,
-                    percentagePrevious: 22.59,
+                    dateAsOf: '2021-06-08T00:00:00.000Z',
+                    dateAsOfPrevious: '2021-06-07T00:00:00.000Z',
+                    daysElapsedSincePrevious: 1,
+                    percentChangeDelta: -0.31,
+                    percentage: 33.21,
+                    percentageChange: 0,
+                    percentageChangeAvgPerDay: 0,
+                    percentagePrevious: 33.21,
                     totalPopulation: 5685800,
                     type: 'fullyVaccinated',
-                    value: 1440545,
-                    valueChange: 155899,
-                    valueChangeAvgPerDay: 22271,
-                    valuePrevious: 1284646,
+                    value: 1888253,
+                    valueChange: 0,
+                    valueChangeAvgPerDay: 0,
+                    valuePrevious: 1888253,
                 }
             ] as Count[]
         ]);
