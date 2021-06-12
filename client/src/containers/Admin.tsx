@@ -1,19 +1,21 @@
 import './App.css';
 import React, { Component } from 'react';
-import { Button, Divider, Dropdown, DropdownProps, Form, Grid, Menu, TextArea } from 'semantic-ui-react';
+import { Button, Divider, Dropdown, DropdownProps, Form, FormProps, Grid, Menu, TextArea } from 'semantic-ui-react';
 import { apiEndpoint } from '../config';
 import { withAuth0, WithAuth0Props } from '@auth0/auth0-react';
-import { getAllCounts, syncLatestCount } from '../api/counts-api';
+import { getAllCounts, syncLatestCount, upsertCounts } from '../api/counts-api';
 
 interface AppState {
   stage: any,
   stageUrl: string
+  upsertData: string
 };
 
 class Admin extends Component<WithAuth0Props> {
   state: AppState = {
     stage: apiEndpoint.split('/').reverse()[0],
-    stageUrl: apiEndpoint
+    stageUrl: apiEndpoint,
+    upsertData: '[]'
   }
 
   stageOptions = [
@@ -45,6 +47,17 @@ class Admin extends Component<WithAuth0Props> {
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
+    } catch(error) {
+      alert(error);
+    }
+  }
+
+  handleChange = (e: any, { name, value }: any) => this.setState({ [name]: value});
+
+  upsertCounts = async () => {
+    try {
+      await upsertCounts(await this.loadAuthToken(), this.state.upsertData);
+      alert('Success');
     } catch(error) {
       alert(error);
     }

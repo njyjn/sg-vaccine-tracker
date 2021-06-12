@@ -30,3 +30,13 @@ export async function syncLatestCount(token: string): Promise<Count> {
     });
     return response.data
 }
+
+export async function upsertCounts(token: string, payload: string): Promise<Count> {
+    const response = await axios.put(`${apiEndpoint}/counts`, payload, {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }
+    });
+    return response.data
+}

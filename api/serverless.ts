@@ -213,6 +213,21 @@ const serverlessConfiguration: AWS = {
         }
       ]
     },
+    UpsertCounts: {
+      handler: 'src/lambdas/http/upsertCounts.handler',
+      events: [
+        {
+          http: {
+            method: 'put',
+            path: 'counts',
+            cors: true,
+            authorizer: {
+              name: 'AuthWithCert'
+            },
+          }
+        },
+      ]
+    },
     SyncLatestCount: {
       handler: 'src/lambdas/scheduler/syncLatestCount.handler',
       events: [
