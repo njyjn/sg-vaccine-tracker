@@ -20,10 +20,13 @@
     - [Components](#components)
     - [Running offline](#running-offline)
       - [API](#api)
+        - [Prerequisite: Set up .env](#prerequisite-set-up-env)
         - [Prerequisite: AWS CLI](#prerequisite-aws-cli)
         - [Prerequisite: Docker](#prerequisite-docker)
         - [Run API server offline](#run-api-server-offline)
       - [Client](#client)
+        - [Prerequisite: Set up .env](#prerequisite-set-up-env-1)
+      - [Run everything using Docker Compose](#run-everything-using-docker-compose)
     - [Unit Testing](#unit-testing)
     - [Making Pull Requests](#making-pull-requests)
 
@@ -150,13 +153,26 @@ This project is able to be run locally. Install the package dependencies in the 
 
 #### API
 
+##### Prerequisite: Set up .env
+
+Rename `.env.sample` to `.env`
 ##### Prerequisite: AWS CLI
 
-The AWS CLI is needed to sign certain requests, even though no actual connection to AWS is being made. Install AWS CLI [here](https://aws.amazon.com/cli/) and [go through the setup](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-quickstart.html) to configure with some **dummy credentials**.
+The AWS CLI is needed to sign certain requests, even though no actual connection to AWS is being made. Install AWS CLI [here](https://aws.amazon.com/cli/) and [go through the setup](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-quickstart.html) to configure with some **actual credentials**.
+
+Request credentials from the CODEOWNER or use your own. Setup your credentials as such
+
+```bash
+$ aws configure
+AWS Access Key ID [None]: AKIAIOSFODNN7EXAMPLE
+AWS Secret Access Key [None]: wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+Default region name [None]:
+Default output format [None]: json
+```
 
 ##### Prerequisite: Docker
 
-Docker is needed to host a local copy of the Database. Install Docker [here](https://www.docker.com/get-started) 
+Docker is needed to host a local copy of the Database and, optionally, the backend and frontend. Install Docker [here](https://www.docker.com/get-started).
 
 ##### Run API server offline
 
@@ -172,9 +188,31 @@ You are now ready to make requests using the front end
 
 #### Client
 
+##### Prerequisite: Set up .env
+
+Rename `.env.sample` to `.env` and replace its contents with the following:
+
+```env
+REACT_APP_API_ID=http://localhost:3003
+REACT_APP_API_STAGE=local
+PORT=8081
+```
+
 The client is easier to set up. Enter `npm run start`
 
-A successful offline run results in a `http://localhost:8001` page getting data from the backend API and displaying the counts. Otherwise, in case of error, an error page is shown.
+A successful offline run results in a `http://localhost:8081` page getting data from the backend API and displaying the counts. Otherwise, in case of error, an error page is shown.
+
+#### Run everything using Docker Compose
+
+Assuming you have met the prerequisites for the API and Client services above, you can run both of them using Docker without having to download anything else.
+
+```bash
+docker-compose up
+```
+
+Access the client on your browser using `http://localhost:8081/`
+
+When done, run `docker-compose down`.
 
 ### Unit Testing
 

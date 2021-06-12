@@ -220,13 +220,13 @@ export class Counts extends React.PureComponent<CountsProps, CountsState> {
         if (!changePercent) { changePercent = 0 };
         if (!previous) { previous = 0 };
         const sign = changePercent < 0 ? '🔻' : '🔺';
-        return `${sign}${changePercent}% (${previous})`;
+        return `${sign}${changePercent}% (${previous.toLocaleString('en-SG')})`;
     }
 
     formatIncreaseRate(changePercentAvgPerDay: number | undefined, valueChangeAvgPerDay: number | undefined) {
         if (!valueChangeAvgPerDay) { valueChangeAvgPerDay = 0 };
         const sign = valueChangeAvgPerDay < 0 ? '🔻' : '🔺';
-        return `${sign}${changePercentAvgPerDay}% (${valueChangeAvgPerDay})`;
+        return `${sign}${changePercentAvgPerDay}% (${valueChangeAvgPerDay.toLocaleString('en-SG')})`;
     }
 
     formatChangeDelta(percentChangeDelta: number | undefined) {

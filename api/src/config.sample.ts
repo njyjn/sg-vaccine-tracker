@@ -8,3 +8,5 @@ export const corsOptions = {
 };
 
 export const slsCorsOrigins = commonOrigins;
+
+export const jwksUrl = 'https://example.us.auth0.com/.well-known/jwks.json'

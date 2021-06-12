@@ -13,9 +13,11 @@ export interface Count {
     valueChange?: number,
     valueChangeAvgPerDay?: number,
     percentChangeDelta?: number,
+    lastModified?: string,
+    lastModifiedBy?: string,
 };
 
 export interface CountKey {
     dateAsOf: string,
     type: string,
-}
+};

@@ -1,6 +1,6 @@
 import './App.css';
 import { Component } from 'react';
-import { Counts } from './components/Counts';
+import { Counts } from '../components/Counts';
 import { Container, Divider, Grid, Icon, List } from 'semantic-ui-react';
 
 export interface AppProps {};
