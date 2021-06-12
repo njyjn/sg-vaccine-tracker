@@ -14,6 +14,36 @@ const countTypeKeymap: Map<string, string> = new Map([
     ['totalVaccinated', 'Total Doses Administered'],
 ]);
 
+const sortCountsAscending = (a: Count, b: Count): number => {
+    return new Date(a.dateAsOf) > new Date(b.dateAsOf) ? 1 : -1;
+};
+
+function addModifyMetadata(count: Count, userId: string, ts?: Date) {
+    count.lastModified = (ts || new Date()).toISOString();
+    count.lastModifiedBy = userId;
+}
+
+export async function recalculateAllHistoricals(userIdRequesting: string): Promise<void> {
+
+    try {
+        for (const [key, _value] of countTypeKeymap) {
+            const countsForKey = await getAllCounts(key);
+            if (countsForKey[0]) {
+                let countPrevious: Count = null;
+                for (const count of countsForKey[0].sort(sortCountsAscending)) {
+                    const countWithHistoricals = calculateHistoricals(count, countPrevious);
+                    addModifyMetadata(countWithHistoricals, userIdRequesting);
+                    await createOrUpdateCount(countWithHistoricals);
+                    countPrevious = countWithHistoricals;
+                }
+            }
+        }
+    } catch(e) {
+        console.log('Failed to recalculate historicals', e);
+        throw new Error(e);
+    }
+}
+
 export async function getAllCounts(type?: string, limit?: number, nextKey?: string): Promise<[Count[], any]> {
     try {
         return await countAccess.getAllCounts(type, limit, nextKey);

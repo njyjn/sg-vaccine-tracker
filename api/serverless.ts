@@ -234,6 +234,21 @@ const serverlessConfiguration: AWS = {
         },
       ]
     },
+    RecalculateAllHistoricals: {
+      handler: 'src/lambdas/http/recalculateAllHistoricals.handler',
+      events: [
+        {
+          http: {
+            method: 'patch',
+            path: 'counts/historicals',
+            cors: true,
+            authorizer: {
+              name: 'AuthWithCert'
+            },
+          }
+        },
+      ]
+    },
     SyncLatestCount: {
       handler: 'src/lambdas/scheduler/syncLatestCount.handler',
       events: [

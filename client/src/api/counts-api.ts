@@ -41,3 +41,13 @@ export async function upsertCounts(token: string, payload: string): Promise<Coun
     });
     return response.data
 }
+
+export async function recalculateAllHistoricals(token: string): Promise<any> {
+    const response = await axios.patch(`${apiEndpoint}/counts/historicals`, '', {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }
+    });
+    return response.data
+}
