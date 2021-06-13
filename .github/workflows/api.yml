@@ -27,6 +27,13 @@ jobs:
       REGION: 'local'
       JWKS_URL: 'http://example.com/'
       COMMON_ORIGINS: 'http://localhost:8000'
+      sgvt-slack-bot-token: 123
+      sgvt-slack-test-channel: 123
+      sgvt-slack-notification-channel: 123
+      sgvt-twitter-api-key: 123
+      sgvt-twitter-api-secret-key: 123
+      sgvt-twitter-access-token-key: 123
+      sgvt-twitter-access-token-secret: 123
 
     steps:
     - uses: actions/checkout@v2
