@@ -184,12 +184,14 @@ export class Counts extends React.PureComponent<CountsProps, CountsState> {
 
     renderError() {
         return (
-            <Grid.Row>
-                <Grid.Column textAlign="center">
-                    <Header inverted as ="large">¯\_(ツ)_/¯</Header>
-                    <Header inverted size="medium">{this.randomErrorString()}</Header>
-                </Grid.Column>
-            </Grid.Row>
+            <Grid stackable>
+                <Grid.Row>
+                    <Grid.Column textAlign="center">
+                        <Header inverted as ="large">¯\_(ツ)_/¯</Header>
+                        <Header inverted size="medium">{this.randomErrorString()}</Header>
+                    </Grid.Column>
+                </Grid.Row>
+            </Grid>
         );
     }
 
