@@ -6,7 +6,7 @@ const dbHost = process.env.DYNAMODB_HOST || 'localhost'
 export class CountAccess {
     constructor(
         private readonly docClient: DocumentClient = createDynamoDbClient(),
-        private readonly countsTable = process.env.COUNTS_TABLE + 'V2',
+        private readonly countsTable = process.env.COUNTS_TABLE,
     ) {}
 
     async getAllCounts(type?: string, limit?: number, nextKey?: string): Promise<[Count[], DocumentClient.Key]> {

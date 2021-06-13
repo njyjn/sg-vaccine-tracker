@@ -47,12 +47,6 @@ const serverlessConfiguration: AWS = {
               sources: [
                 'docker/dynamodb/seeds/counts.json'
               ]
-            },
-            {
-              table: "${self:provider.environment.COUNTS_TABLE}V2",
-              sources: [
-                'docker/dynamodb/seeds/counts.json'
-              ]
             }
           ]
         }
@@ -124,7 +118,7 @@ const serverlessConfiguration: AWS = {
     environment: {
       AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
       DEPLOY_STAGE: "${self:provider.stage}",
-      COUNTS_TABLE: "sgvt-counts-${self:provider.stage}",
+      COUNTS_TABLE: "sgvt-counts-${self:provider.stage}V2",
       STAT_URL: 'https://www.moh.gov.sg/covid-19/vaccination',
       API_KEY_NAME: "sgvt-${self:provider.stage}-key",
       NEW_DATAPOINT_TOPIC_NAME: "sgvt-newDatapointTopic-${self:provider.stage}",
@@ -141,6 +135,7 @@ const serverlessConfiguration: AWS = {
           'dynamodb:Scan',
           'dynamodb:PutItem',
           'dynamodb:GetItem',
+          'dynamodb:Query',
         ],
         Resource: "arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.COUNTS_TABLE}",
       },
@@ -300,33 +295,6 @@ const serverlessConfiguration: AWS = {
   },
   resources: {
     Resources: {
-      CountsDynamoDBTable: {
-        Type: 'AWS::DynamoDB::Table',
-        Properties: {
-          AttributeDefinitions: [
-            {
-              AttributeName: 'dateAsOf',
-              AttributeType: 'S',
-            },
-            {
-              AttributeName: 'type',
-              AttributeType: 'S',
-            },
-          ],
-          KeySchema: [
-            {
-              AttributeName: 'dateAsOf',
-              KeyType: 'HASH',
-            },
-            {
-              AttributeName: 'type',
-              KeyType: 'RANGE',
-            },
-          ],
-          BillingMode: 'PAY_PER_REQUEST',
-          TableName: "${self:provider.environment.COUNTS_TABLE}"
-        }
-      },
       CountsDynamoDBTableV2: {
         Type: 'AWS::DynamoDB::Table',
         Properties: {
@@ -351,7 +319,7 @@ const serverlessConfiguration: AWS = {
             },
           ],
           BillingMode: 'PAY_PER_REQUEST',
-          TableName: "${self:provider.environment.COUNTS_TABLE}V2"
+          TableName: "${self:provider.environment.COUNTS_TABLE}"
         }
       },
       NewDatapointTopic: {
