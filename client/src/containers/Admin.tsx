@@ -1,6 +1,6 @@
 import './App.css';
 import React, { Component } from 'react';
-import { Button, Container, Divider, Dropdown, DropdownProps, Form, Grid, Header, Icon, Menu, Message, TextArea } from 'semantic-ui-react';
+import { Button, Container, Divider, Dropdown, DropdownProps, Form, Grid, Menu, Message, TextArea } from 'semantic-ui-react';
 import { apiEndpoint } from '../config';
 import { withAuth0, WithAuth0Props } from '@auth0/auth0-react';
 import { getAllCounts, recalculateAllHistoricals, syncLatestCount, upsertCounts } from '../api/counts-api';
@@ -65,7 +65,7 @@ class Admin extends Component<WithAuth0Props> {
 
   recalculateAllHistoricals = async () => {
     try {
-      const response = await recalculateAllHistoricals(await this.loadAuthToken());
+      await recalculateAllHistoricals(await this.loadAuthToken());
       alert('Success');
     } catch(error) {
       alert (error);
