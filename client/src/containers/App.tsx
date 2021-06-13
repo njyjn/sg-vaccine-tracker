@@ -52,7 +52,8 @@ export default class App extends Component<AppProps, AppState> {
                 href="https://www.singstat.gov.sg/find-data/search-by-theme/population/population-and-population-structure/latest-data"
                 target="_blank"
                 rel="noopener noreferrer"
-              >latest government statistics</a>. Attempts are made to retrieve data from aforementioned sources daily but is not guaranteed to be up to date. 
+              >latest government statistics</a>. The Singapore population refers to the total number of residents (citizens and permanent residents) as well as other residents.
+              Attempts are made to retrieve data from aforementioned sources daily but is not guaranteed to be up to date.
               All metrics are approximate and derived from the aforementioned sources. 
               No affiliation with any government entity. Use at your own risk. 
               Meta photo from <a
