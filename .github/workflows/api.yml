@@ -20,11 +20,18 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [12.x, 14.x]
+        node-version: [14.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
     - uses: actions/checkout@v2
+
+    - name: Setup DynamoDB local
+      uses: rrainn/dynamodb-action@v2.0.0
+      with:
+        sharedDb: true
+        port: 8000
+
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v2
       with:
@@ -35,5 +42,16 @@ jobs:
         aws-access-key-id: ${{ secrets.TEST_AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.TEST_AWS_SECRET_ACCESS_KEY }}
         aws-region: us-east-1
-    - run: npm ci
-    - run: npm test
+
+    - name: Install serverless
+      run: npm i -g serverless
+    - name: Migrate the DynamoDB tables
+      run: serverless dynamodb migrate --stage local
+    - name: Seed DynamoDB tables
+      run: serverless dynamodb seed --stage local
+
+    - name: Install NPM dependencies
+      run: npm ci
+
+    - name: Run tests
+    - run: npx jest --runInBand --bail
