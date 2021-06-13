@@ -20,12 +20,11 @@
     - [Components](#components)
     - [Running offline](#running-offline)
       - [API](#api)
-        - [Prerequisite: Set up .env](#prerequisite-set-up-env)
         - [Prerequisite: AWS CLI](#prerequisite-aws-cli)
         - [Prerequisite: Docker](#prerequisite-docker)
         - [Run API server offline](#run-api-server-offline)
       - [Client](#client)
-        - [Prerequisite: Set up .env](#prerequisite-set-up-env-1)
+        - [Prerequisite: Set up .env](#prerequisite-set-up-env)
       - [Run everything using Docker Compose](#run-everything-using-docker-compose)
     - [Unit Testing](#unit-testing)
     - [Making Pull Requests](#making-pull-requests)
@@ -153,9 +152,6 @@ This project is able to be run locally. Install the package dependencies in the 
 
 #### API
 
-##### Prerequisite: Set up .env
-
-Rename `.env.sample` to `.env`
 ##### Prerequisite: AWS CLI
 
 The AWS CLI is needed to sign certain requests, even though no actual connection to AWS is being made. Install AWS CLI [here](https://aws.amazon.com/cli/) and [go through the setup](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-quickstart.html) to configure with some **actual credentials**.
@@ -190,13 +186,7 @@ You are now ready to make requests using the front end
 
 ##### Prerequisite: Set up .env
 
-Rename `.env.sample` to `.env` and replace its contents with the following:
-
-```env
-REACT_APP_API_ID=http://localhost:3003
-REACT_APP_API_STAGE=local
-PORT=8081
-```
+Rename `.env.sample` to `.env`.
 
 The client is easier to set up. Enter `npm run start`
 
@@ -222,5 +212,5 @@ Place any mock fixtures into `__mock__`.
 
 ### Making Pull Requests
 
-Please make all pull requests to `njyjn/sg-vaccine-tracker` against the `staging` branch.
+Please make all pull requests to `njyjn/sg-vaccine-tracker` against the `dev` branch.
 

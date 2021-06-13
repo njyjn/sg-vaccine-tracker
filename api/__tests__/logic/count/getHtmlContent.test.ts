@@ -17,10 +17,22 @@ describe('fully vaccinated count', () => {
         mockedAxios.get.mockResolvedValueOnce({ data: mockHtmlContent });
         await expect(
             getHtmlContent()
-        ).resolves.toEqual([{
-            dateAsOf: '2021-06-08T00:00:00.000Z',
-            type: 'fullyVaccinated',
-            value: 1888253
-        }] as Count[])
+        ).resolves.toEqual([
+            {
+                dateAsOf: '2021-06-08T00:00:00.000Z',
+                type: 'partiallyVaccinated',
+                value: 2503814
+            },
+            {
+                dateAsOf: '2021-06-08T00:00:00.000Z',
+                type: 'fullyVaccinated',
+                value: 1888253
+            },
+            {
+                dateAsOf: '2021-06-08T00:00:00.000Z',
+                type: 'totalVaccinated',
+                value: 4392067
+            }
+        ] as Count[])
     })
 })
