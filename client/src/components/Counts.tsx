@@ -104,7 +104,7 @@ export class Counts extends React.PureComponent<CountsProps, CountsState> {
                     </Header>
                     <Progress percent={percent} active inverted color="grey"></Progress>
                     <Header size="tiny" inverted>
-                        of Singaporeans are fully vaccinated against COVID-19
+                        of Singapore Population are fully vaccinated against COVID-19
                     </Header>
                 </Grid.Column>
             </Grid.Row>
