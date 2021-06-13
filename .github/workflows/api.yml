@@ -23,6 +23,11 @@ jobs:
         node-version: [14.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
+    env:
+      REGION: 'local'
+      JWKS_URL: 'http://example.com/'
+      COMMON_ORIGINS: 'http://localhost:8000'
+
     steps:
     - uses: actions/checkout@v2
 

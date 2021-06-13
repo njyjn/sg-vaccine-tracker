@@ -1,6 +1,4 @@
-const commonOrigins = [
-    '*'
-]
+const commonOrigins = process.env.COMMON_ORIGINS.split(',');
 
 export const corsOptions = {
     credentials: true,
@@ -9,4 +7,4 @@ export const corsOptions = {
 
 export const slsCorsOrigins = commonOrigins;
 
-export const jwksUrl = 'https://example.us.auth0.com/.well-known/jwks.json'
+export const jwksUrl = process.env.JWKS_URL
