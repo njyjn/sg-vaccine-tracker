@@ -27,6 +27,7 @@ jobs:
       REGION: 'local'
       JWKS_URL: 'http://example.com/'
       COMMON_ORIGINS: 'http://localhost:8000'
+      COUNTS_TABLE: 'sgvt-counts-localV2'
       sgvt-slack-bot-token: 123
       sgvt-slack-test-channel: 123
       sgvt-slack-notification-channel: 123
