@@ -104,7 +104,7 @@ export class Counts extends React.PureComponent<CountsProps, CountsState> {
                     </Header>
                     <Progress percent={percent} active inverted color="grey"></Progress>
                     <Header size="tiny" inverted>
-                        of Singaporeans are fully vaccinated against COVID-19
+                        of the Singapore population is fully vaccinated against COVID-19
                     </Header>
                 </Grid.Column>
             </Grid.Row>
@@ -122,20 +122,19 @@ export class Counts extends React.PureComponent<CountsProps, CountsState> {
                     <Header size="small" inverted>
                         {percentPartial}% ({valuePartial.toLocaleString()})
                     </Header>
-                    <p>of Singaporeans are partially vaccinated</p>
+                    <p>of the population is partially vaccinated</p>
                 </Grid.Column>
                 <Grid.Column textAlign="center">
                     <Header size="small" inverted>
                         {percentTotal}% ({valueTotal.toLocaleString()})
                     </Header>
-                    <p>of Singaporeans have received at least one dose</p>
+                    <p>of the population has received at least one dose</p>
                 </Grid.Column>
             </Grid.Row>
         )
     }
 
     renderMetrics() {
-        // TODO: Convert all numerical values into comma separated strings if applicable
         return (
             <Grid.Row columns='5'>
                 <Grid.Column>
