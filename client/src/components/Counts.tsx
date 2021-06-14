@@ -126,9 +126,9 @@ export class Counts extends React.PureComponent<CountsProps, CountsState> {
                 </Grid.Column>
                 <Grid.Column textAlign="center">
                     <Header size="small" inverted>
-                        {percentTotal}% ({valueTotal.toLocaleString()})
+                        {valueTotal.toLocaleString()}
                     </Header>
-                    <p>of the population has received at least one dose</p>
+                    <p>doses have been administered</p>
                 </Grid.Column>
             </Grid.Row>
         )
