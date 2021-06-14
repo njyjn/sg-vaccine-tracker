@@ -6,6 +6,7 @@ import { calculatePercentage } from "./count";
 const stage = process.env.DEPLOY_STAGE;
 
 export async function processNewDatapoint(event: Count): Promise<void> {
+    // TODO: Optimize this SNS process so that multiple counts can be sent at once, single Slack notification is sent for single sync update, and Tweet contains more info
     try {
         const countCumulativeInt: number = event.value;
         const countCumulative: string = event.value.toString();
@@ -18,10 +19,12 @@ export async function processNewDatapoint(event: Count): Promise<void> {
 
         const tweetText = buildTweet(countCumulativeInt, mahjongBar);
 
-        if (stage === 'prod') {
-            await postToTwitter(tweetText);
-        } else {
-            console.log(`Skipping sending '${tweetText}' to Twitter as not in Production`);
+        if (type === 'fullyVaccinated') {
+            if (stage === 'prod') {
+                await postToTwitter(tweetText);
+            } else {
+                console.log(`Skipping sending '${tweetText}' to Twitter as not in Production`);
+            }
         }
     } catch (e) {
         console.log('Failed to process data point', e);

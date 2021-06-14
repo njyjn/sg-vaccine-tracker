@@ -6,14 +6,16 @@ const topicName = process.env.NEW_DATAPOINT_TOPIC_NAME;
 
 export async function processLatestCount(sourceUrl?: string): Promise<[boolean, Count[]]> {
     const allCounts = await getHtmlContent(sourceUrl);
-    const alreadyExists = await checkCountExists(allCounts[0]); // a sample will do, since all counts are synced together
     let results: Count[] = [];
-    if (!alreadyExists) {
-        for (const count of allCounts) {
+    for (const count of allCounts) {
+        const alreadyExists = await checkCountExists(count);
+        if (!alreadyExists) {
             const lastCount = await getLatestCount(count.type);
             const countWithHistoricals = await calculateHistoricals(count, lastCount);
             results.push(countWithHistoricals);
         }
+    };
+    if (results.length > 0) {
         return [true, results];
     }
 
