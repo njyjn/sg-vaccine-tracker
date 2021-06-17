@@ -82,6 +82,7 @@ export class Counts extends React.PureComponent<CountsProps, CountsState> {
             <Grid stackable>
                 {this.renderSummary()}
                 {this.renderMetrics()}
+                {this.renderHerdImmunityEstimate()}
                 <Divider />
                 {this.renderFirstShotMetrics()}
                 <Divider />
@@ -115,7 +116,6 @@ export class Counts extends React.PureComponent<CountsProps, CountsState> {
         const valuePartial = this.state.countPartial.value
         const percentPartial = this.state.countPartial.percentage;
         const valueTotal = this.state.countTotal.value
-        const percentTotal = this.state.countTotal.percentage;
         return (
             <Grid.Row columns='2'>
                 <Grid.Column textAlign="center">
@@ -168,7 +168,24 @@ export class Counts extends React.PureComponent<CountsProps, CountsState> {
                 </Popup>
             </Grid.Row>
         )
+    }
 
+    renderHerdImmunityEstimate() {
+        const percentageChangeAvgPerDay = this.state.count.percentageChangeAvgPerDay || 0.0;
+        const estimateDate = new Date(this.state.count.dateAsOf);
+        const estimateEta = Math.round((70-this.state.count.percentage) / percentageChangeAvgPerDay);
+        if (percentageChangeAvgPerDay > 0.0) {
+            return (
+                <Grid.Row>
+                    <Grid.Column>
+                        <p>Based on the past window's average change per day, Singapore could achieve herd immunity (70%) by</p>
+                        <Header size="tiny" inverted>
+                            {this.formatDatestringToLocale(estimateDate.setDate(estimateDate.getDate() + estimateEta))} ({estimateEta} days)
+                        </Header>
+                    </Grid.Column>
+                </Grid.Row>
+            )
+        }
     }
 
     renderLoading() {
@@ -202,7 +219,7 @@ export class Counts extends React.PureComponent<CountsProps, CountsState> {
         return strings[Date.now() % 2];
     }
 
-    formatDatestringToLocale(date: string | undefined) {
+    formatDatestringToLocale(date: string | number | undefined) {
         if (date) {
             return new Date(date).toLocaleDateString(
                 'en-SG',
