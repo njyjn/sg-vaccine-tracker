@@ -171,14 +171,15 @@ export class Counts extends React.PureComponent<CountsProps, CountsState> {
     }
 
     renderHerdImmunityEstimate() {
+        const herdImmunityPercentage = 90;
         const percentageChangeAvgPerDay = this.state.count.percentageChangeAvgPerDay || 0.0;
         const estimateDate = new Date(this.state.count.dateAsOf);
-        const estimateEta = Math.round((70-this.state.count.percentage) / percentageChangeAvgPerDay);
+        const estimateEta = Math.round((herdImmunityPercentage-this.state.count.percentage) / percentageChangeAvgPerDay);
         if (percentageChangeAvgPerDay > 0.0) {
             return (
                 <Grid.Row>
                     <Grid.Column>
-                        <p>Based on the past window's average change per day, Singapore could achieve herd immunity (70%) by</p>
+                        <p>Based on the past window's average change per day, Singapore could achieve {herdImmunityPercentage}% immunity by</p>
                         <Header size="tiny" inverted>
                             {this.formatDatestringToLocale(estimateDate.setDate(estimateDate.getDate() + estimateEta))} ({estimateEta} days)
                         </Header>
