@@ -125,7 +125,7 @@ const serverlessConfiguration: AWS = {
       AWS_ACCOUNT_ID: {
         "Fn::Sub": "${AWS::AccountId}"
       },
-      POPULATION_TOTAL: '5685800',
+      POPULATION_TOTAL: '5453600',
     },
     lambdaHashingVersion: '20201221',
     iamRoleStatements: [
