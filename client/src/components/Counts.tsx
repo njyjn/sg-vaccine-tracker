@@ -2,7 +2,7 @@ import * as React from 'react';
 import { getLatestCount } from '../api/counts-api';
 import { Count } from '../types/Count';
 
-import { Dimmer, Grid, Header, Loader, Progress, Image, Divider, Popup } from 'semantic-ui-react';
+import { Dimmer, Grid, Header, Loader, Progress, Image, Divider, Popup, Message, Icon } from 'semantic-ui-react';
 import 'semantic-ui-css/semantic.min.css';
 
 interface CountsProps {};
@@ -80,6 +80,7 @@ export class Counts extends React.PureComponent<CountsProps, CountsState> {
     renderCount() {
         return (
             <Grid stackable>
+                {this.renderMessage()}
                 {this.renderSummary()}
                 {this.renderMetrics()}
                 {this.renderHerdImmunityEstimate()}
@@ -90,13 +91,47 @@ export class Counts extends React.PureComponent<CountsProps, CountsState> {
         )
     }
 
+    renderMessage() {
+        return (
+            <Grid.Row gutter>
+                    <Message floating info size='small'>
+                    <p>As MOH has started reporting percentages directly on their <a href="https://www.moh.gov.sg/covid-19/vaccination">website</a>, SG Vaccine Tracker will stop offering updates as of 23 Oct 2021. I hope that I was able to shed some light on Singapore's vaccination progress in the early stages of the COVID-19 pandemic.</p>
+                    <p>Millions of people continue to be impacted by the pandemic through the loss of loved ones, economic devastation, and the restriction of personal freedoms. In addition to putting an end to this crisis, vaccines can save lives and have been <a
+                        href='https://www.cdc.gov/coronavirus/2019-ncov/vaccines/effectiveness/index.html'
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >proven to reduce the severity and incidence of infection</a>. It is my hope that everyone plays their part by getting their vaccine, standing up against misinformers and misinformation, and encouraging others to do the same.</p>
+                    <p><strong>Stay safe, stay well, and be kind</strong></p>
+                    <p>Till we meet again<br />~ Justin Ng</p>
+                    <p>
+                        <a
+                            href='https://github.com/njyjn/'
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        ><Icon name='github' link /></a>
+                        <a
+                            href='https://www.linkedin.com/in/njyjustin/'
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        ><Icon name='linkedin' link /></a>
+                        <a
+                            href='https://justin.sg/'
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        ><Icon name='address card' link /></a>
+                    </p>
+                </Message>
+            </Grid.Row>
+        )
+    }
+
     renderSummary() {
         const percent = this.state.count.percentage;
         console.log(percent)
         return (
             <Grid.Row>
                 <Grid.Column textAlign="center">
-                    <Image src='/logo192.png' size='small' centered></Image>
+                    <Image src='/logo192.png' size='tiny' centered></Image>
                     <Header size="small" inverted>
                         {this.formatDatestringToLocale(this.state.count.dateAsOf)}
                     </Header>
