@@ -4,7 +4,7 @@ import { CountAccess } from 'src/dataLayer/countAccess';
 import { parse } from 'node-html-parser';
 
 const statUrl = process.env.STAT_URL;
-const populationTotal = process.env.POPULATION_TOTAL || '5685800';
+const populationTotal = process.env.POPULATION_TOTAL || '5685800'; // this is the 2020 statistic. It has since been superceded by env var
 
 const countAccess = new CountAccess();
 
